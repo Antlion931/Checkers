@@ -1,5 +1,6 @@
 package com.example.checkersgrid;
 
+import com.example.checkersgrid.judge.Board;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,6 +19,11 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
+        Board board8 = new Board(8, 3);
+        System.out.println(board8.draw());
+
+        Board board10 = new Board(10, 4);
+        System.out.println(board10.draw());
         launch();
     }
 }
