@@ -18,5 +18,33 @@ public class GridTile extends Rectangle
         {
             setFill(Color.GREY);
         }
+
+        setOnMouseEntered(mouseEvent -> {
+            highlightTile(true);
+        });
+        setOnMouseExited(mouseEvent -> {
+            highlightTile(false);
+        });
+    }
+
+    public void setSize(double W, double H)
+    {
+        setWidth(W);
+        setHeight(H);
+    }
+
+    public void highlightTile(boolean highlighted)
+    {
+        if(highlighted)
+        {
+            setStroke(Color.BLUE);
+            setSize(96,96);
+            setStrokeWidth(4);
+        }
+        else
+        {
+            setSize(100, 100);
+            setStrokeWidth(0);
+        }
     }
 }
