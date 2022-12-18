@@ -7,6 +7,7 @@ public class GridTile extends Rectangle
 {
     private CheckerPiece piece;
     boolean isHighlighted;
+    boolean atMovement;
     int xPos;
     int yPos;
     public GridTile(boolean light, int x, int y)
@@ -15,6 +16,7 @@ public class GridTile extends Rectangle
         xPos = x;
         yPos = y;
         isHighlighted = false;
+        atMovement = false;
         setWidth(80);
         setHeight(80);
         if(light)
@@ -43,10 +45,13 @@ public class GridTile extends Rectangle
         setWidth(W);
         setHeight(H);
     }
-
     public void setPiece(CheckerPiece checkerPiece)
     {
         piece = checkerPiece;
+    }
+    public CheckerPiece getPiece()
+    {
+        return piece;
     }
     public void highlightTile()
     {
@@ -63,9 +68,11 @@ public class GridTile extends Rectangle
         }
         isHighlighted = !isHighlighted;
     }
-
-    public CheckerPiece getPiece()
+    public void setAtMovement(boolean movement)
     {
-        return piece;
+        atMovement = movement;
+    }
+    public boolean isAtMovement() {
+        return atMovement;
     }
 }
