@@ -1,6 +1,5 @@
 package com.example.checkersgrid;
 
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -25,12 +24,16 @@ public class CheckerPiece extends Circle
         }
 
         placeChecker(x, y);
-        setTranslateX(50);
-        setTranslateY(50);
+
+        toFront();
+
+        setMouseTransparent(true);
     }
 
     public void placeChecker(int x, int y)
     {
         relocate(x * 80, y * 80);
+        setTranslateX(10);
+        setTranslateY(10);
     }
 }

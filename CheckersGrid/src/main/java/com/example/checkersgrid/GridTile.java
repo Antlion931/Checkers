@@ -1,14 +1,20 @@
 package com.example.checkersgrid;
 
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class GridTile extends Rectangle
 {
+    private CheckerPiece piece;
+    boolean isHighlighted;
+    int xPos;
+    int yPos;
     public GridTile(boolean light, int x, int y)
     {
         super();
+        xPos = x;
+        yPos = y;
+        isHighlighted = false;
         setWidth(80);
         setHeight(80);
         if(light)
@@ -20,9 +26,16 @@ public class GridTile extends Rectangle
             setFill(Color.SIENNA);
         }
 
+        setOnMouseClicked(mouseEvent -> {
+//            System.out.println("getx(): " + getX());
+//            System.out.println("getLayoutX(): " + getLayoutX());
+//            System.out.println("getScaleX(): " + getScaleX());
+//            System.out.println("getTranslateX(): " + getTranslateX());;
+        });
+
         relocate(x * getWidth(), y * getHeight());
-        setTranslateX(40);
-        setTranslateY(40);
+        //setTranslateX(40);
+        //setTranslateY(40);
     }
 
     private void setSize(double W, double H)
@@ -31,18 +44,28 @@ public class GridTile extends Rectangle
         setHeight(H);
     }
 
-    public void highlightTile(boolean highlighted)
+    public void setPiece(CheckerPiece checkerPiece)
     {
-        if(highlighted)
+        piece = checkerPiece;
+    }
+    public void highlightTile()
+    {
+        if(isHighlighted)
+        {
+            setSize(100, 100);
+            setStrokeWidth(0);
+        }
+        else
         {
             setStroke(Color.BLUE);
             setSize(96,96);
             setStrokeWidth(4);
         }
-        else
-        {
-            setSize(100, 100);
-            setStrokeWidth(0);
-        }
+        isHighlighted = !isHighlighted;
+    }
+
+    public CheckerPiece getPiece()
+    {
+        return piece;
     }
 }

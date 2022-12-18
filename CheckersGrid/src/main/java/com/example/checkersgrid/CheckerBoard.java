@@ -1,14 +1,22 @@
 package com.example.checkersgrid;
 
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class CheckerBoard extends Pane
 {
     private final GridTile[][] tiles;
+    private Group checkerTileGroup;
+    private Group checkerPieceGroup;
 
     public CheckerBoard(int size)
     {
+        checkerTileGroup = new Group();
+        checkerPieceGroup = new Group();
         tiles = new GridTile[size][size];
+        getChildren().addAll(checkerTileGroup, checkerPieceGroup);
 
         for(int i = 0; i < size; i++)
         {
@@ -16,7 +24,7 @@ public class CheckerBoard extends Pane
             {
                 GridTile tile = new GridTile((i + j) % 2 == 0, j, i);
                 tiles[j][i] = tile;
-                getChildren().add(tile);
+                checkerTileGroup.getChildren().add(tile);
 
                 CheckerPiece piece = null;
 
@@ -30,10 +38,15 @@ public class CheckerBoard extends Pane
                 }
                 if(piece != null)
                 {
-                    getChildren().add(piece);
+                    tiles[j][i].setPiece(piece);
+                    checkerPieceGroup.getChildren().add(piece);
                 }
             }
         }
+        setOnMouseClicked(mouseEvent -> {
+            System.out.println(mouseEvent.getSceneX());
+            System.out.println(mouseEvent.getSceneY());
+        });
     }
 
     public GridTile getTile(int x, int y)
