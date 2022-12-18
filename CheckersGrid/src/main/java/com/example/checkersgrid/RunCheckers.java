@@ -2,9 +2,13 @@ package com.example.checkersgrid;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class RunCheckers extends Application
@@ -21,17 +25,11 @@ public class RunCheckers extends Application
     {
         //hard coded number of tiles, for testing purposes
         int numberOfTiles = 8;
-        for(int i = 0; i < numberOfTiles; i++)
-        {
-            for(int j = 0; j < numberOfTiles; j++)
-            {
-                GridTile tile = new GridTile((i + j) % 2 == 0);
-                grid.add(tile, i, j);
-            }
-        }
-        grid.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(grid, (100 * numberOfTiles + 80), (100 * numberOfTiles + 80));
-        scene.setFill(Color.GREEN);
+
+        Pane board = new CheckerBoard(numberOfTiles);
+
+        Scene scene = new Scene(board, (80 * numberOfTiles + 80), (80 * numberOfTiles + 80));
+        scene.setFill(Color.SEAGREEN);
         stage.setScene(scene);
         stage.show();
     }

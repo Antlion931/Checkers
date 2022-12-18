@@ -1,33 +1,31 @@
 package com.example.checkersgrid;
 
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class GridTile extends Rectangle
 {
-    public GridTile(boolean white)
+    public GridTile(boolean light, int x, int y)
     {
         super();
-        setWidth(100);
-        setHeight(100);
-        if(white)
+        setWidth(80);
+        setHeight(80);
+        if(light)
         {
-            setFill(Color.WHITE);
+            setFill(Color.WHEAT);
         }
         else
         {
-            setFill(Color.GREY);
+            setFill(Color.SIENNA);
         }
 
-        setOnMouseEntered(mouseEvent -> {
-            highlightTile(true);
-        });
-        setOnMouseExited(mouseEvent -> {
-            highlightTile(false);
-        });
+        relocate(x * getWidth(), y * getHeight());
+        setTranslateX(40);
+        setTranslateY(40);
     }
 
-    public void setSize(double W, double H)
+    private void setSize(double W, double H)
     {
         setWidth(W);
         setHeight(H);
