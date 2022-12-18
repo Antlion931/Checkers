@@ -14,8 +14,7 @@ public class CheckersFactory {
     private CheckersFactory() {
 
     }
-    public Checker makeCheckerForPlayer(int playerid) {
-        return new Checker(playerid);
-        //TODO:
+    public Checker makeCheckerForPlayer(Player player) {
+        return new NormalChecker(player);
     }
 }

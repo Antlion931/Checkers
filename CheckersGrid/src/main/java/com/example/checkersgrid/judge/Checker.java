@@ -1,10 +1,15 @@
 package com.example.checkersgrid.judge;
 
-public class Checker {
-    public int playerid;
+import javafx.util.Pair;
 
-    Checker(int playerid) {
-        this.playerid = playerid;
+import java.util.List;
+
+abstract public class Checker {
+    public Player player;
+
+    public Checker(Player player) {
+        this.player = player;
     }
 
+    abstract public List<List<Cords>> possible_moves( Board board, Cords him);
 }
