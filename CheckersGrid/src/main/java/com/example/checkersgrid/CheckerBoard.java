@@ -1,6 +1,7 @@
 package com.example.checkersgrid;
 
 import javafx.scene.Group;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 
 public class CheckerBoard extends Pane
@@ -41,6 +42,7 @@ public class CheckerBoard extends Pane
                 }
             }
         }
+
         firstClick();
     }
     public void firstClick()
@@ -48,10 +50,17 @@ public class CheckerBoard extends Pane
         setOnMouseClicked(mouseEvent -> {
             int xPosition = (int) (mouseEvent.getSceneX()/80);
             int yPosition = (int) (mouseEvent.getSceneY()/80);
-            if(tiles[xPosition][yPosition].getPiece() != null && !tiles[xPosition][yPosition].isAtMovement())
+            if(mouseEvent.getButton().equals(MouseButton.SECONDARY))
             {
-                tiles[xPosition][yPosition].setAtMovement(true);
-                secondClick(xPosition, yPosition);
+                removePiece(xPosition, yPosition);
+            }
+            if(mouseEvent.getButton().equals(MouseButton.PRIMARY))
+            {
+                if(tiles[xPosition][yPosition].getPiece() != null && !tiles[xPosition][yPosition].isAtMovement())
+                {
+                    tiles[xPosition][yPosition].setAtMovement(true);
+                    secondClick(xPosition, yPosition);
+                }
             }
         });
     }
@@ -60,19 +69,23 @@ public class CheckerBoard extends Pane
         setOnMouseClicked(mouseEvent1 -> {
             int dirXPosition = (int) (mouseEvent1.getSceneX()/80);
             int dirYPosition = (int) (mouseEvent1.getSceneY()/80);
-            if(tiles[dirXPosition][dirYPosition].getPiece() == null && !tiles[dirXPosition][dirYPosition].isAtMovement())
+            if(mouseEvent1.getButton().equals(MouseButton.PRIMARY))
             {
-                tiles[dirXPosition][dirYPosition].setPiece(tiles[xPos][yPos].getPiece());
-                tiles[xPos][yPos].setPiece(null);
-                tiles[dirXPosition][dirYPosition].getPiece().placeChecker(dirXPosition, dirYPosition);
-                tiles[xPos][yPos].setAtMovement(false);
-                setOnMouseClicked(null);
-                firstClick();
+                if(tiles[dirXPosition][dirYPosition].getPiece() == null && !tiles[dirXPosition][dirYPosition].isAtMovement())
+                {
+                    tiles[dirXPosition][dirYPosition].setPiece(tiles[xPos][yPos].getPiece());
+                    tiles[xPos][yPos].setPiece(null);
+                    tiles[dirXPosition][dirYPosition].getPiece().placeChecker(dirXPosition, dirYPosition);
+                    tiles[xPos][yPos].setAtMovement(false);
+                    setOnMouseClicked(null);
+                    firstClick();
+                }
             }
         });
     }
-    public GridTile getTile(int x, int y)
+    public void removePiece(int x, int y)
     {
-        return tiles[x][y];
+        checkerPieceGroup.getChildren().remove(tiles[x][y].getPiece());
+        tiles[x][y].setPiece(null);
     }
 }
