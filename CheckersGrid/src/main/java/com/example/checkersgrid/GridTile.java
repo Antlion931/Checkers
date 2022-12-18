@@ -6,8 +6,8 @@ import javafx.scene.shape.Rectangle;
 public class GridTile extends Rectangle
 {
     private CheckerPiece piece;
-    boolean isHighlighted;
-    boolean atMovement;
+    private boolean isHighlighted;
+    private boolean atMovement;
     int xPos;
     int yPos;
     public GridTile(boolean light, int x, int y)
@@ -28,18 +28,10 @@ public class GridTile extends Rectangle
             setFill(Color.SIENNA);
         }
 
-        setOnMouseClicked(mouseEvent -> {
-//            System.out.println("getx(): " + getX());
-//            System.out.println("getLayoutX(): " + getLayoutX());
-//            System.out.println("getScaleX(): " + getScaleX());
-//            System.out.println("getTranslateX(): " + getTranslateX());;
-        });
-
         relocate(x * getWidth(), y * getHeight());
         //setTranslateX(40);
         //setTranslateY(40);
     }
-
     private void setSize(double W, double H)
     {
         setWidth(W);

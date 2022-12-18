@@ -1,8 +1,6 @@
 package com.example.checkersgrid;
 
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class CheckerBoard extends Pane
@@ -44,32 +42,13 @@ public class CheckerBoard extends Pane
             }
         }
         firstClick();
-//        setOnMouseClicked(mouseEvent -> {
-//            int xPosition = (int) (mouseEvent.getSceneX()/80);
-//            int yPosition = (int) (mouseEvent.getSceneY()/80);
-//            if(tiles[xPosition][yPosition].getPiece() != null && !tiles[xPosition][yPosition].atMovement)
-//            {
-//                tiles[xPosition][yPosition].setAtMovement(true);
-//                setOnMouseClicked(mouseEvent1 -> {
-//                    int dirXPosition = (int) (mouseEvent1.getSceneX()/80);
-//                    int dirYPosition = (int) (mouseEvent1.getSceneY()/80);
-//                    if(tiles[dirXPosition][dirYPosition].getPiece() == null && !tiles[dirXPosition][dirYPosition].atMovement)
-//                    {
-//                        tiles[dirXPosition][dirYPosition].setPiece(tiles[xPosition][yPosition].getPiece());
-//                        tiles[xPosition][yPosition].setPiece(null);
-//                        tiles[dirXPosition][dirYPosition].getPiece().placeChecker(dirXPosition, dirYPosition);
-//                        //setOnMouseClicked(null);
-//                    }
-//                });
-//            }
-//        });
     }
     public void firstClick()
     {
         setOnMouseClicked(mouseEvent -> {
             int xPosition = (int) (mouseEvent.getSceneX()/80);
             int yPosition = (int) (mouseEvent.getSceneY()/80);
-            if(tiles[xPosition][yPosition].getPiece() != null && !tiles[xPosition][yPosition].atMovement)
+            if(tiles[xPosition][yPosition].getPiece() != null && !tiles[xPosition][yPosition].isAtMovement())
             {
                 tiles[xPosition][yPosition].setAtMovement(true);
                 secondClick(xPosition, yPosition);
@@ -81,11 +60,12 @@ public class CheckerBoard extends Pane
         setOnMouseClicked(mouseEvent1 -> {
             int dirXPosition = (int) (mouseEvent1.getSceneX()/80);
             int dirYPosition = (int) (mouseEvent1.getSceneY()/80);
-            if(tiles[dirXPosition][dirYPosition].getPiece() == null && !tiles[dirXPosition][dirYPosition].atMovement)
+            if(tiles[dirXPosition][dirYPosition].getPiece() == null && !tiles[dirXPosition][dirYPosition].isAtMovement())
             {
                 tiles[dirXPosition][dirYPosition].setPiece(tiles[xPos][yPos].getPiece());
                 tiles[xPos][yPos].setPiece(null);
                 tiles[dirXPosition][dirYPosition].getPiece().placeChecker(dirXPosition, dirYPosition);
+                tiles[xPos][yPos].setAtMovement(false);
                 setOnMouseClicked(null);
                 firstClick();
             }
