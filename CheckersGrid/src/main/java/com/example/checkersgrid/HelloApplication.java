@@ -2,6 +2,7 @@ package com.example.checkersgrid;
 
 import com.example.checkersgrid.judge.Board;
 import com.example.checkersgrid.judge.Cords;
+import com.example.checkersgrid.judge.NormalChecker;
 import com.example.checkersgrid.judge.Player;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,15 +19,16 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        Board board8 = new Board(8, 3);
-        System.out.println(board8.draw());
+        Board board = new Board(8, 0);
+        board.body[1][1] = new NormalChecker(Player.BLACK);
+        board.body[2][2] = new NormalChecker(Player.WHITE);
+        board.body[4][4] = new NormalChecker(Player.WHITE);
+        board.body[6][6] = new NormalChecker(Player.WHITE);
+        board.body[2][4] = new NormalChecker(Player.WHITE);
 
-        Board board10 = new Board(10, 4);
-
-        System.out.println(board10.draw());
-
+        System.out.println(board.draw());
         System.out.println("Black possible moves: ");
-        List<List<Cords>> movesBLACK10 = board10.showAllPossibleMovesOfPlayer(Player.BLACK);
+        List<List<Cords>> movesBLACK10 = board.showAllPossibleMovesOfPlayer(Player.BLACK);
         for(List<Cords> lc : movesBLACK10) {
             for(Cords c : lc) {
                 System.out.print("(");
@@ -38,7 +40,7 @@ public class HelloApplication extends Application {
             System.out.println();
         }
         System.out.println("White possible moves: ");
-        List<List<Cords>> movesWHITE10 = board10.showAllPossibleMovesOfPlayer(Player.WHITE);
+        List<List<Cords>> movesWHITE10 = board.showAllPossibleMovesOfPlayer(Player.WHITE);
         for(List<Cords> lc : movesWHITE10) {
             for(Cords c : lc) {
                 System.out.print("(");

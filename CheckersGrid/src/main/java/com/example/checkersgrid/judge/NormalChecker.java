@@ -26,14 +26,51 @@ public class NormalChecker extends Checker {
             } catch (OutOfBounds e) { continue;}
         }
 
+        //attacks
+        possibleOffsets = new Cords[] {new Cords(-2, -2), new Cords(2, -2), new Cords(-2, 2), new Cords(2, 2)};
 
+        for (Cords offset : possibleOffsets) {
+            try {
+                if( board.getFieldFrom(him, offset) == null && board.performAttack(him, board.getCordsFrom(him, offset)) != null) {
+                    List<Cords> simple = new ArrayList<>();
+                    simple.add(0, him);
+                    simple.add(1, board.getCordsFrom(him, offset));
+                    result.add(simple);
 
+                    List<List<Cords>> potentialNextMoves = thinkThroughtNextAttacks(board.performAttack(him, board.getCordsFrom(him, offset)), board.getCordsFrom(him, offset));
 
+                    for(List<Cords> lc : potentialNextMoves) {
+                        lc.add(0, him);
+                        lc.add(1, board.getCordsFrom(him, offset));
+                        result.add(lc);
+                    }
+                }
+            } catch (OutOfBounds e) { continue;}
+        }
         return result;
     }
 
-//    private List<List<Pair<Integer, Integer>>> think_throught_move(Board board, Pair<Integer, Integer> him, boolean attacked) {
-//
-//    }
+    private List<List<Cords>> thinkThroughtNextAttacks(Board board, Cords him) {
+        List<List<Cords>> result = new ArrayList<>();
+        Cords[] possibleOffsets = new Cords[] {new Cords(-2, -2), new Cords(2, -2), new Cords(-2, 2), new Cords(2, 2)};
 
+        for (Cords offset : possibleOffsets) {
+            try {
+                if( board.getFieldFrom(him, offset) == null && board.performAttack(him, board.getCordsFrom(him, offset)) != null) {
+                    List<Cords> simple = new ArrayList<>();
+                    simple.add(0, board.getCordsFrom(him, offset));
+                    result.add(simple);
+
+                    List<List<Cords>> potentialNextMoves = thinkThroughtNextAttacks(board.performAttack(him, board.getCordsFrom(him, offset)), board.getCordsFrom(him, offset));
+
+                    for(List<Cords> lc : potentialNextMoves) {
+                        lc.add(0, board.getCordsFrom(him, offset));
+                        result.add(lc);
+                    }
+                }
+            } catch (OutOfBounds e) { continue;}
+        }
+
+        return result;
+    }
 }

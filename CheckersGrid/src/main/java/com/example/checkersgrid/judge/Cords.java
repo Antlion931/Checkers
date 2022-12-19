@@ -9,6 +9,10 @@ public class Cords {
         y = 0;
     }
 
+    public boolean cordsEquals(Cords obj) {
+        return this.x == obj.x && this.y == obj.y;
+    }
+
     public  Cords(Cords other) {
         this.x = other.x;;
         this.y = other.y;

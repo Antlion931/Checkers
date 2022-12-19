@@ -4,18 +4,31 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Board {
 
     public enum Sides {
         UPPER,
         BOTTOM,
-
-
-
     }
 
-    Checker[][] body;
+    public Checker[][] body;
+
+    public Board(Board other) {
+        body = new Checker[other.body.length][other.body.length];
+
+        for (int y = 0; y < body.length; y++) {
+            for (int x = 0; x < body.length; x++ ) {
+                if(other.body[x][y] == null) {
+                    continue;
+                }
+
+                body[x][y] = other.body[x][y];
+            }
+        }
+
+    }
 
     public Board(int size, int players_rows) {
         body = new Checker[size][size];
@@ -90,4 +103,43 @@ public class Board {
 
         return result;
     }
+
+    public Board performAttack(Cords from, Cords to) {
+        Board newBoard = new Board(this);
+        int changeOnX = (to.x - from.x) / Math.abs((to.x - from.x));
+        int changeOnY = (to.y - from.y) / Math.abs((to.y - from.y));
+
+        if(newBoard.body[to.x][to.y] != null || newBoard.body[from.x][from.y] == null) {
+            return null;
+        }
+
+        newBoard.body[to.x][to.y] = newBoard.body[from.x][from.y];
+        newBoard.body[from.x][from.y] = null;
+
+        Cords test = new Cords(from);
+        test.x += changeOnX;
+        test.y += changeOnY;
+
+        boolean hasKillSomeone = false;
+
+        while(!test.cordsEquals(to)) {
+            if(newBoard.body[test.x][test.y] != null) {
+                if(hasKillSomeone) {
+                    return null;
+                }
+
+                newBoard.body[test.x][test.y] = null;
+                hasKillSomeone = true;
+            }
+
+            test.x += changeOnX;
+            test.y += changeOnY;
+        }
+
+        if (hasKillSomeone) {
+            return newBoard;
+        }
+        return null;
+    }
+    
 }
