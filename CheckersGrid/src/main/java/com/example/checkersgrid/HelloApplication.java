@@ -39,6 +39,19 @@ public class HelloApplication extends Application {
             }
             System.out.println();
         }
+
+        System.out.println("Black possible attacks: ");
+        List<List<Cords>> attacksBLACK10 = board.showAllPossibleAttacksOfPlayer(Player.BLACK);
+        for(List<Cords> lc : attacksBLACK10) {
+            for(Cords c : lc) {
+                System.out.print("(");
+                System.out.print(c.x);
+                System.out.print(", ");
+                System.out.print(c.y);
+                System.out.print(") ");
+            }
+            System.out.println();
+        }
         System.out.println("White possible moves: ");
         List<List<Cords>> movesWHITE10 = board.showAllPossibleMovesOfPlayer(Player.WHITE);
         for(List<Cords> lc : movesWHITE10) {
@@ -51,6 +64,74 @@ public class HelloApplication extends Application {
             }
             System.out.println();
         }
+
+        System.out.println("White possible attacks: ");
+        List<List<Cords>> attacksWHITE10 = board.showAllPossibleAttacksOfPlayer(Player.WHITE);
+        for(List<Cords> lc : attacksWHITE10) {
+            for(Cords c : lc) {
+                System.out.print("(");
+                System.out.print(c.x);
+                System.out.print(", ");
+                System.out.print(c.y);
+                System.out.print(") ");
+            }
+            System.out.println();
+        }
+
+        board.update(attacksBLACK10.get(0));
+
+        System.out.println(board.draw());
+        System.out.println("Black possible moves: ");
+        movesBLACK10 = board.showAllPossibleMovesOfPlayer(Player.BLACK);
+        for(List<Cords> lc : movesBLACK10) {
+            for(Cords c : lc) {
+                System.out.print("(");
+                System.out.print(c.x);
+                System.out.print(", ");
+                System.out.print(c.y);
+                System.out.print(") ");
+            }
+            System.out.println();
+        }
+
+        System.out.println("Black possible attacks: ");
+        attacksBLACK10 = board.showAllPossibleAttacksOfPlayer(Player.BLACK);
+        for(List<Cords> lc : attacksBLACK10) {
+            for(Cords c : lc) {
+                System.out.print("(");
+                System.out.print(c.x);
+                System.out.print(", ");
+                System.out.print(c.y);
+                System.out.print(") ");
+            }
+            System.out.println();
+        }
+        System.out.println("White possible moves: ");
+        movesWHITE10 = board.showAllPossibleMovesOfPlayer(Player.WHITE);
+        for(List<Cords> lc : movesWHITE10) {
+            for(Cords c : lc) {
+                System.out.print("(");
+                System.out.print(c.x);
+                System.out.print(", ");
+                System.out.print(c.y);
+                System.out.print(") ");
+            }
+            System.out.println();
+        }
+
+        System.out.println("White possible attacks: ");
+        attacksWHITE10 = board.showAllPossibleAttacksOfPlayer(Player.WHITE);
+        for(List<Cords> lc : attacksWHITE10) {
+            for(Cords c : lc) {
+                System.out.print("(");
+                System.out.print(c.x);
+                System.out.print(", ");
+                System.out.print(c.y);
+                System.out.print(") ");
+            }
+            System.out.println();
+        }
+
         launch();
     }
 }

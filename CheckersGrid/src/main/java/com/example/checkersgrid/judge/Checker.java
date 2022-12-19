@@ -12,4 +12,6 @@ abstract public class Checker {
     }
 
     abstract public List<List<Cords>> possible_moves( Board board, Cords him);
+
+    abstract public List<List<Cords>> possible_attacks( Board board, Cords him);
 }

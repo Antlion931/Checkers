@@ -12,7 +12,6 @@ public class NormalChecker extends Checker {
 
     public List<List<Cords>> possible_moves(Board board, Cords him) {
         List<List<Cords>> result = new ArrayList<>();
-        //moves
         Cords[] possibleOffsets = new Cords[] {new Cords(-1, -1), new Cords(1, -1)};
 
         for (Cords offset : possibleOffsets) {
@@ -26,8 +25,12 @@ public class NormalChecker extends Checker {
             } catch (OutOfBounds e) { continue;}
         }
 
-        //attacks
-        possibleOffsets = new Cords[] {new Cords(-2, -2), new Cords(2, -2), new Cords(-2, 2), new Cords(2, 2)};
+        return result;
+    }
+
+    public List<List<Cords>> possible_attacks( Board board, Cords him) {
+        List<List<Cords>> result = new ArrayList<>();
+        Cords[] possibleOffsets = new Cords[] {new Cords(-2, -2), new Cords(2, -2), new Cords(-2, 2), new Cords(2, 2)};
 
         for (Cords offset : possibleOffsets) {
             try {
@@ -48,6 +51,7 @@ public class NormalChecker extends Checker {
             } catch (OutOfBounds e) { continue;}
         }
         return result;
+
     }
 
     private List<List<Cords>> thinkThroughtNextAttacks(Board board, Cords him) {

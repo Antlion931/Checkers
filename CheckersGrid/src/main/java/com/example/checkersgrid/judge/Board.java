@@ -104,6 +104,28 @@ public class Board {
         return result;
     }
 
+    public List<List<Cords>> showAllPossibleAttacksOfPlayer(Player player) {
+        List<List<Cords>> result = new ArrayList<>();
+
+        for (int y = 0; y < body.length; y++) {
+            for (int x = 0; x < body.length; x++ ) {
+                if(body[x][y] == null || body[x][y].player != player) {
+                    continue;
+                }
+
+                result.addAll(body[x][y].possible_attacks(this, new Cords(x, y)));
+            }
+        }
+
+        return result;
+    }
+
+    public void update(List<Cords> move) {
+        for(int i = 0; i < move.size() - 1; i++) {
+            this.body = this.performAttack(move.get(i), move.get(i + 1)).body;
+        }
+    }
+
     public Board performAttack(Cords from, Cords to) {
         Board newBoard = new Board(this);
         int changeOnX = (to.x - from.x) / Math.abs((to.x - from.x));
@@ -141,5 +163,5 @@ public class Board {
         }
         return null;
     }
-    
+
 }
