@@ -17,4 +17,8 @@ public class CheckersFactory {
     public Checker makeCheckerForPlayer(Player player) {
         return new NormalChecker(player);
     }
+
+    public Checker makeQueenForPlayer(Player player) {
+        return new QueenChecker(player);
+    }
 }

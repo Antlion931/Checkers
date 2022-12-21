@@ -55,7 +55,7 @@ public class Board {
         for (int y = 0; y < body.length; y++){
             for (int x = 0; x < body.length; x++ ){
                 if(body[x][y] != null) {
-                    result+=body[x][y].player.shortcut();
+                    result+=body[x][y].draw();
                 } else {
                     result+='-';
                 }
@@ -121,15 +121,21 @@ public class Board {
     }
 
     public void update(List<Cords> move) {
+        if(performAttack(move.get(0), move.get(1)) == null) {
+            body[move.get(1).x][move.get(1).y] = body[move.get(0).x][move.get(0).y];
+            body[move.get(0).x][move.get(0).y] = null;
+            return;
+        }
+
         for(int i = 0; i < move.size() - 1; i++) {
-            this.body = this.performAttack(move.get(i), move.get(i + 1)).body;
+            body = performAttack(move.get(i), move.get(i + 1)).body;
         }
     }
 
     public Board performAttack(Cords from, Cords to) {
         Board newBoard = new Board(this);
-        int changeOnX = (to.x - from.x) / Math.abs((to.x - from.x));
-        int changeOnY = (to.y - from.y) / Math.abs((to.y - from.y));
+        int changeOnX = to.x - from.x != 0 ? (to.x - from.x) / Math.abs((to.x - from.x)) : 0;
+        int changeOnY = to.y - from.y != 0 ? (to.y - from.y) / Math.abs((to.y - from.y)) : 0;
 
         if(newBoard.body[to.x][to.y] != null || newBoard.body[from.x][from.y] == null) {
             return null;
@@ -142,23 +148,27 @@ public class Board {
         test.x += changeOnX;
         test.y += changeOnY;
 
-        boolean hasKillSomeone = false;
+        boolean hasKillEnemy = false;
 
         while(!test.cordsEquals(to)) {
             if(newBoard.body[test.x][test.y] != null) {
-                if(hasKillSomeone) {
+                if(body[test.x][test.y].player == body[from.x][from.y].player) {
+                    return null;
+                }
+
+                if(hasKillEnemy) {
                     return null;
                 }
 
                 newBoard.body[test.x][test.y] = null;
-                hasKillSomeone = true;
+                hasKillEnemy = true;
             }
 
             test.x += changeOnX;
             test.y += changeOnY;
         }
 
-        if (hasKillSomeone) {
+        if (hasKillEnemy) {
             return newBoard;
         }
         return null;

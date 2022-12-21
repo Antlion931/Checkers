@@ -1,22 +1,21 @@
 package com.example.checkersgrid.judge;
 
-import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class NormalChecker extends Checker {
-    public NormalChecker (Player player) {
+public class NormalChecker extends Checker{
+
+    NormalChecker(Player player) {
         super(player);
     }
 
     public List<List<Cords>> possible_moves(Board board, Cords him) {
         List<List<Cords>> result = new ArrayList<>();
-        Cords[] possibleOffsets = new Cords[] {new Cords(-1, -1), new Cords(1, -1)};
+        Cords[] possibleMoveOffsets = new Cords[] {new Cords(-1, -1), new Cords(1, -1)};
 
-        for (Cords offset : possibleOffsets) {
+        for (Cords offset : possibleMoveOffsets) {
             try {
-                if( board.getFieldFrom(him, offset) == null ) {
+                if( board.getFieldFrom(him, offset) == null) {
                     List<Cords> x = new ArrayList<>();
                     x.add(him);
                     x.add(board.getCordsFrom(him, offset));
@@ -24,15 +23,13 @@ public class NormalChecker extends Checker {
                 }
             } catch (OutOfBounds e) { continue;}
         }
-
         return result;
     }
-
     public List<List<Cords>> possible_attacks( Board board, Cords him) {
         List<List<Cords>> result = new ArrayList<>();
-        Cords[] possibleOffsets = new Cords[] {new Cords(-2, -2), new Cords(2, -2), new Cords(-2, 2), new Cords(2, 2)};
+        Cords[] possibleAttacksOffsets = new Cords[] {new Cords(-2, -2), new Cords(2, -2), new Cords(-2, 2), new Cords(2, 2)};
 
-        for (Cords offset : possibleOffsets) {
+        for (Cords offset : possibleAttacksOffsets) {
             try {
                 if( board.getFieldFrom(him, offset) == null && board.performAttack(him, board.getCordsFrom(him, offset)) != null) {
                     List<Cords> simple = new ArrayList<>();
@@ -53,12 +50,11 @@ public class NormalChecker extends Checker {
         return result;
 
     }
-
     private List<List<Cords>> thinkThroughtNextAttacks(Board board, Cords him) {
         List<List<Cords>> result = new ArrayList<>();
-        Cords[] possibleOffsets = new Cords[] {new Cords(-2, -2), new Cords(2, -2), new Cords(-2, 2), new Cords(2, 2)};
+        Cords[] possibleAttacksOffsets = new Cords[] {new Cords(-2, -2), new Cords(2, -2), new Cords(-2, 2), new Cords(2, 2)};
 
-        for (Cords offset : possibleOffsets) {
+        for (Cords offset : possibleAttacksOffsets) {
             try {
                 if( board.getFieldFrom(him, offset) == null && board.performAttack(him, board.getCordsFrom(him, offset)) != null) {
                     List<Cords> simple = new ArrayList<>();
