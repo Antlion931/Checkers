@@ -32,33 +32,27 @@ public class GameController
 
         for(List<Cords> start : moves)
         {
-            //System.out.println(start.get(0).x + ", " + start.get(0).y);
             viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
         }
         viewBoard.setOnMouseClicked(mouseEvent -> {
-
-            for(List<Cords> lc : moves) {
-                for(Cords c : lc) {
-                    System.out.print("(");
-                    System.out.print(c.x);
-                    System.out.print(", ");
-                    System.out.print(c.y);
-                    System.out.print(") ");
-                }
-                System.out.println();
-            }
-
             int xPosition = (int) (mouseEvent.getSceneX()/80);
             int yPosition = (int) (mouseEvent.getSceneY()/80);
-            if(mouseEvent.getButton().equals(MouseButton.SECONDARY))
-            {
-                viewBoard.removePiece(xPosition, yPosition);
-            }
+//            if(mouseEvent.getButton().equals(MouseButton.SECONDARY))
+//            {
+//                viewBoard.removePiece(xPosition, yPosition);
+//            }
             if(mouseEvent.getButton().equals(MouseButton.PRIMARY))
             {
-                if(viewBoard.getTiles()[xPosition][yPosition].getPiece() != null && !viewBoard.getTiles()[xPosition][yPosition].isAtMovement())
+                if(viewBoard.getTiles()[xPosition][yPosition].getPiece() != null && viewBoard.getTiles()[xPosition][yPosition].isHighlighted())
                 {
-                    viewBoard.getTiles()[xPosition][yPosition].setAtMovement(true);
+                    turnOffFields();
+                    for(List<Cords> move : moves)
+                    {
+                        if(xPosition == move.get(0).x && yPosition == move.get(0).y)
+                        {
+                            viewBoard.getTiles()[move.get(1).x][move.get(1).y].highlightTile(true);
+                        }
+                    }
                     secondClick(xPosition, yPosition);
                 }
             }
@@ -71,27 +65,40 @@ public class GameController
             int dirYPosition = (int) (mouseEvent1.getSceneY()/80);
             if(mouseEvent1.getButton().equals(MouseButton.PRIMARY))
             {
-                if(viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece() == null && !viewBoard.getTiles()[dirXPosition][dirYPosition].isAtMovement())
+                if(viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece() == null && viewBoard.getTiles()[dirXPosition][dirYPosition].isHighlighted())
                 {
                     viewBoard.getTiles()[dirXPosition][dirYPosition].setPiece(viewBoard.getTiles()[xPos][yPos].getPiece());
                     viewBoard.getTiles()[xPos][yPos].setPiece(null);
                     viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece().placeChecker(dirXPosition, dirYPosition);
                     viewBoard.getTiles()[xPos][yPos].setAtMovement(false);
                     viewBoard.setOnMouseClicked(null);
-                    for(int i = 0; i < moves.size(); i++)
+                    for(List<Cords> move : moves)
                     {
-                        //System.out.println(moves.get(i).get(1).x);
-                        if(xPos == moves.get(i).get(0).x && yPos == moves.get(i).get(0).y)
+                        if(xPos == move.get(0).x && yPos == move.get(0).y)
                         {
-                            if(dirXPosition == moves.get(i).get(1).x && dirYPosition == moves.get(i).get(1).y)
+                            if(dirXPosition == move.get(1).x && dirYPosition == move.get(1).y)
                             {
-                                judge.update(moves.get(i));
+                                judge.update(move);
                             }
                         }
                     }
+                    turnOffFields();
                     firstClick();
                 }
             }
         });
+    }
+    private void turnOffFields()
+    {
+        for(GridTile[] column : viewBoard.getTiles())
+        {
+            for(GridTile tile : column)
+            {
+                if(tile.isHighlighted())
+                {
+                    tile.highlightTile(false);
+                }
+            }
+        }
     }
 }
