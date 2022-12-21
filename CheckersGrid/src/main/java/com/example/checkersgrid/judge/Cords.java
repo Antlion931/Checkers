@@ -22,4 +22,8 @@ public class Cords {
         this.x = x;
         this.y = y;
     }
+
+    public Cords multiplay(int k) {
+        return new Cords(x*k, y*k);
+    }
 }

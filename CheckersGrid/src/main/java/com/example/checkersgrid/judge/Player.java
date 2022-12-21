@@ -1,15 +1,15 @@
 package com.example.checkersgrid.judge;
 
 public enum Player {
-    WHITE('W'),
-    BLACK('B');
+    WHITE('w'),
+    BLACK('b');
 
-    private char shortcut_for_drawing;
+    private char shortcut;
+
     private Board.Sides side;
 
-
-    Player(char shortcut_for_drawing) {
-        this.shortcut_for_drawing = shortcut_for_drawing;
+    Player(char shortcut) {
+        this.shortcut = shortcut;
     }
 
     public void setSideOnce(Board.Sides side) {
@@ -22,7 +22,7 @@ public enum Player {
         return side;
     }
 
-    public char shortcut() {
-        return shortcut_for_drawing;
+    public char getShortcut() {
+        return shortcut;
     }
 }
