@@ -83,6 +83,14 @@ public class GameController
                         }
                     }
                     turnOffFields();
+                    if(player == Player.WHITE)
+                    {
+                        player = Player.BLACK;
+                    }
+                    else
+                    {
+                        player = Player.WHITE;
+                    }
                     firstClick();
                 }
             }
