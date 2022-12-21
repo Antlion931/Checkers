@@ -129,9 +129,40 @@ public class GameController
                                 {
                                     if(dirXPosition == attack.get(1).x && dirYPosition == attack.get(1).y)
                                     {
-                                        int xStrike = ((xPos + dirXPosition) / 2);
-                                        int yStrike = ((yPos + dirYPosition) / 2);
-                                        viewBoard.removePiece(xStrike, yStrike);
+                                        int xDir, yDir;
+//                                        int xStrike = ((xPos + dirXPosition) / 2);
+//                                        int yStrike = ((yPos + dirYPosition) / 2);
+//                                        viewBoard.removePiece(xStrike, yStrike);
+                                        if(dirXPosition - xPos > 0)
+                                        {
+                                            xDir = 1;
+                                        }
+                                        else
+                                        {
+                                            xDir = -1;
+                                        }
+                                        System.out.println(xDir);
+                                        if(dirYPosition - yPos > 0)
+                                        {
+                                            yDir = 1;
+                                        }
+                                        else
+                                        {
+                                            yDir = -1;
+                                        }
+                                        System.out.println(yDir);
+                                        int currentX = xPos;
+                                        int currnetY = yPos;
+                                        while(true)
+                                        {
+                                            currentX += xDir;
+                                            currnetY += yDir;
+                                            if(viewBoard.getTiles()[currentX][currnetY].getPiece() != null)
+                                            {
+                                                viewBoard.removePiece(currentX, currnetY);
+                                                break;
+                                            }
+                                        }
                                         judge.update(attack);
                                         if(attacks.get(0).size() > 2)
                                         {

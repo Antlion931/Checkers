@@ -6,10 +6,12 @@ import javafx.scene.shape.Circle;
 public class CheckerPiece extends Circle
 {
     private final CheckerType checkerType;
-    public CheckerPiece(CheckerType type, int x, int y)
+    private final int Size;
+    public CheckerPiece(CheckerType type, int x, int y, int boardSize)
     {
         super();
         checkerType = type;
+        Size = boardSize;
         setRadius(30);
         setStroke(Color.BLACK);
         setStrokeWidth(2);
@@ -34,5 +36,18 @@ public class CheckerPiece extends Circle
         relocate(x * 80, y * 80);
         setTranslateX(10);
         setTranslateY(10);
+        if(checkerType == CheckerType.WHITE && y == 0)
+        {
+            makeQueen();
+        }
+        else if(checkerType == CheckerType.BLACK && y == Size - 1)
+        {
+            makeQueen();
+        }
+    }
+    public void makeQueen()
+    {
+        setStroke(Color.GOLD);
+        setStrokeWidth(8);
     }
 }

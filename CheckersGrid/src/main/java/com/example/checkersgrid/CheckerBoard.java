@@ -32,11 +32,11 @@ public class CheckerBoard extends Pane
 
                 if(i <= 2 && (i + j) % 2 == 1)
                 {
-                    piece = new CheckerPiece(CheckerType.BLACK, j, i);
+                    piece = new CheckerPiece(CheckerType.BLACK, j, i, size);
                 }
                 if(i >= size - 3 && (i + j) % 2 == 1)
                 {
-                    piece = new CheckerPiece(CheckerType.WHITE, j, i);
+                    piece = new CheckerPiece(CheckerType.WHITE, j, i, size);
                 }
                 if(piece != null)
                 {
