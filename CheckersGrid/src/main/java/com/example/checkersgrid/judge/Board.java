@@ -88,7 +88,7 @@ public class Board {
         return body[cords.x][cords.y];
     }
 
-    public List<List<Cords>> showAllPossibleMovesOfPlayer(Player player) {
+    public List<List<Cords>> showAllPossibleMovesOfPlayer(PlayerInterface player) {
         List<List<Cords>> result = new ArrayList<>();
 
         for (int y = 0; y < body.length; y++) {
@@ -104,7 +104,7 @@ public class Board {
         return result;
     }
 
-    public List<List<Cords>> showAllPossibleAttacksOfPlayer(Player player) {
+    public List<List<Cords>> showAllPossibleAttacksOfPlayer(PlayerInterface player) {
         List<List<Cords>> result = new ArrayList<>();
 
         for (int y = 0; y < body.length; y++) {
@@ -121,15 +121,33 @@ public class Board {
     }
 
     public void update(List<Cords> move) {
-        if(performAttack(move.get(0), move.get(1)) == null) {
+        if(listOfListContain(showAllPossibleMovesOfPlayer(body[move.get(0).x][move.get(0).y].player) , move)) {
             body[move.get(1).x][move.get(1).y] = body[move.get(0).x][move.get(0).y];
             body[move.get(0).x][move.get(0).y] = null;
-            return;
+        } else if (listOfListContain(showAllPossibleAttacksOfPlayer(body[move.get(0).x][move.get(0).y].player), move))  {
+            for(int i = 0; i < move.size() - 1; i++) {
+                body = performAttack(move.get(i), move.get(i + 1)).body;
+            }
+        } else {
+            System.out.println("HI!");
         }
+    }
 
-        for(int i = 0; i < move.size() - 1; i++) {
-            body = performAttack(move.get(i), move.get(i + 1)).body;
+    private boolean listOfListContain(List<List<Cords>> list, List<Cords> element) {
+        over_every_list_element:
+        for( List<Cords> lc : list) {
+            if (lc.size() != element.size()) {
+                continue;
+            }
+
+            for(int i = 0; i < lc.size(); i++) {
+                if (!lc.get(i).cordsEquals(element.get(i))) {
+                    continue over_every_list_element;
+                }
+            }
+            return true;
         }
+        return false;
     }
 
     public Board performAttack(Cords from, Cords to) {

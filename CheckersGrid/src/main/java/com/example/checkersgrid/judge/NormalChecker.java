@@ -5,7 +5,7 @@ import java.util.List;
 
 public class NormalChecker extends Checker{
 
-    NormalChecker(Player player) {
+    NormalChecker(PlayerInterface player) {
         super(player);
     }
 

@@ -1,6 +1,6 @@
 package com.example.checkersgrid.judge;
 
-public enum Player {
+public enum Player implements PlayerInterface{
     WHITE('w'),
     BLACK('b');
 

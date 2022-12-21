@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QueenChecker extends Checker{
-    public QueenChecker(Player player) {
+    public QueenChecker(PlayerInterface player) {
         super(player);
     }
 
