@@ -16,10 +16,10 @@ class CordsTest {
     }
 
     @Test
-    void multiplay() {
-        assertEquals(true, new Cords(6, 5).multiplay(3).cordsEquals(new Cords(18, 15)));
-        assertEquals(true, new Cords(-6, 5).multiplay(-3).cordsEquals(new Cords(18, -15)));
-        assertEquals(false, new Cords(-6, 0).multiplay(6).cordsEquals(new Cords(36, 0)));
-        assertEquals(true, new Cords(6, 5).multiplay(0).cordsEquals(new Cords(0, 0)));
+    void multiply() {
+        assertEquals(true, new Cords(6, 5).multiply(3).cordsEquals(new Cords(18, 15)));
+        assertEquals(true, new Cords(-6, 5).multiply(-3).cordsEquals(new Cords(18, -15)));
+        assertEquals(false, new Cords(-6, 0).multiply(6).cordsEquals(new Cords(36, 0)));
+        assertEquals(true, new Cords(6, 5).multiply(0).cordsEquals(new Cords(0, 0)));
     }
 }

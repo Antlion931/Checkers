@@ -121,15 +121,21 @@ public class Board {
     }
 
     public void update(List<Cords> move) {
+        boolean willBeQueen = false;
+
+        switch (body[move.get(0).x][move.get(0).y].player.getSide()) {
+            case UPPER -> willBeQueen = (move.get(move.size() - 1).y == body.length - 1);
+            case BOTTOM -> willBeQueen = (move.get(move.size() - 1).y == 0);
+        }
+
         if(listOfListContain(showAllPossibleMovesOfPlayer(body[move.get(0).x][move.get(0).y].player) , move)) {
-            body[move.get(1).x][move.get(1).y] = body[move.get(0).x][move.get(0).y];
+            body[move.get(1).x][move.get(1).y] = willBeQueen ? CheckersFactory.getInstance().makeQueenForPlayer(body[move.get(0).x][move.get(0).y].player) :  body[move.get(0).x][move.get(0).y];
             body[move.get(0).x][move.get(0).y] = null;
         } else if (listOfListContain(showAllPossibleAttacksOfPlayer(body[move.get(0).x][move.get(0).y].player), move))  {
             for(int i = 0; i < move.size() - 1; i++) {
                 body = performAttack(move.get(i), move.get(i + 1)).body;
             }
-        } else {
-            System.out.println("HI!");
+            body[move.get(move.size() - 1).x][move.get(move.size() - 1).y] = CheckersFactory.getInstance().makeQueenForPlayer(body[move.get(move.size() - 1).x][move.get(move.size() - 1).y].player);
         }
     }
 

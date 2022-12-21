@@ -23,7 +23,7 @@ public class Cords {
         this.y = y;
     }
 
-    public Cords multiplay(int k) {
+    public Cords multiply(int k) {
         return new Cords(x*k, y*k);
     }
 }

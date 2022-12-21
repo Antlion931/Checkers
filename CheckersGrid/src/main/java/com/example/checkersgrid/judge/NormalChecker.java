@@ -37,7 +37,7 @@ public class NormalChecker extends Checker{
                     simple.add(1, board.getCordsFrom(him, offset));
                     result.add(simple);
 
-                    List<List<Cords>> potentialNextMoves = thinkThroughtNextAttacks(board.performAttack(him, board.getCordsFrom(him, offset)), board.getCordsFrom(him, offset));
+                    List<List<Cords>> potentialNextMoves = thinkThroughNextAttacks(board.performAttack(him, board.getCordsFrom(him, offset)), board.getCordsFrom(him, offset));
 
                     for(List<Cords> lc : potentialNextMoves) {
                         lc.add(0, him);
@@ -50,7 +50,7 @@ public class NormalChecker extends Checker{
         return result;
 
     }
-    private List<List<Cords>> thinkThroughtNextAttacks(Board board, Cords him) {
+    private List<List<Cords>> thinkThroughNextAttacks(Board board, Cords him) {
         List<List<Cords>> result = new ArrayList<>();
         Cords[] possibleAttacksOffsets = new Cords[] {new Cords(-2, -2), new Cords(2, -2), new Cords(-2, 2), new Cords(2, 2)};
 
@@ -61,7 +61,7 @@ public class NormalChecker extends Checker{
                     simple.add(0, board.getCordsFrom(him, offset));
                     result.add(simple);
 
-                    List<List<Cords>> potentialNextMoves = thinkThroughtNextAttacks(board.performAttack(him, board.getCordsFrom(him, offset)), board.getCordsFrom(him, offset));
+                    List<List<Cords>> potentialNextMoves = thinkThroughNextAttacks(board.performAttack(him, board.getCordsFrom(him, offset)), board.getCordsFrom(him, offset));
 
                     for(List<Cords> lc : potentialNextMoves) {
                         lc.add(0, board.getCordsFrom(him, offset));

@@ -21,10 +21,10 @@ public class QueenChecker extends Checker{
         for(Cords c : vectors) {
             try {
                 for(int i = 1;; i++) {
-                    if( board.getFieldFrom(him, c.multiplay(i)) == null) {
+                    if( board.getFieldFrom(him, c.multiply(i)) == null) {
                         List<Cords> simple = new ArrayList<>();
                         simple.add(0, him);
-                        simple.add(1, board.getCordsFrom(him, c.multiplay(i)));
+                        simple.add(1, board.getCordsFrom(him, c.multiply(i)));
                         result.add(simple);
                     } else {
                         break;
@@ -45,17 +45,17 @@ public class QueenChecker extends Checker{
         for(Cords c : vectors) {
             try {
                 for(int i = 1;; i++) {
-                    if( board.getFieldFrom(him, c.multiplay(i)) == null && board.performAttack(him, board.getCordsFrom(him, c.multiplay(i))) != null) {
+                    if( board.getFieldFrom(him, c.multiply(i)) == null && board.performAttack(him, board.getCordsFrom(him, c.multiply(i))) != null) {
                         List<Cords> simple = new ArrayList<>();
                         simple.add(0, him);
-                        simple.add(1, board.getCordsFrom(him, c.multiplay(i)));
+                        simple.add(1, board.getCordsFrom(him, c.multiply(i)));
                         result.add(simple);
 
-                        List<List<Cords>> potentialNextMoves = continoue_attack(board.performAttack(him, board.getCordsFrom(him, c.multiplay(i))), board.getCordsFrom(him, c.multiplay(i)), c);
+                        List<List<Cords>> potentialNextMoves = continoue_attack(board.performAttack(him, board.getCordsFrom(him, c.multiply(i))), board.getCordsFrom(him, c.multiply(i)), c);
 
                         for(List<Cords> lc : potentialNextMoves) {
                             lc.add(0, him);
-                            lc.add(1, board.getCordsFrom(him, c.multiplay(i)));
+                            lc.add(1, board.getCordsFrom(him, c.multiply(i)));
                             result.add(lc);
                         }
                     }
@@ -72,15 +72,15 @@ public class QueenChecker extends Checker{
 
         try {
             for(int i = 1;; i++) {
-                if( board.getFieldFrom(him, vector.multiplay(i)) == null && board.performAttack(him, board.getCordsFrom(him, vector.multiplay(i))) != null) {
+                if( board.getFieldFrom(him, vector.multiply(i)) == null && board.performAttack(him, board.getCordsFrom(him, vector.multiply(i))) != null) {
                     List<Cords> simple = new ArrayList<>();
-                    simple.add(0, board.getCordsFrom(him, vector.multiplay(i)));
+                    simple.add(0, board.getCordsFrom(him, vector.multiply(i)));
                     result.add(simple);
 
-                    List<List<Cords>> potentialNextMoves = continoue_attack(board.performAttack(him, board.getCordsFrom(him, vector.multiplay(i))), board.getCordsFrom(him, vector.multiplay(i)), vector);
+                    List<List<Cords>> potentialNextMoves = continoue_attack(board.performAttack(him, board.getCordsFrom(him, vector.multiply(i))), board.getCordsFrom(him, vector.multiply(i)), vector);
 
                     for(List<Cords> lc : potentialNextMoves) {
-                        lc.add(0, board.getCordsFrom(him, vector.multiplay(i)));
+                        lc.add(0, board.getCordsFrom(him, vector.multiply(i)));
                         result.add(lc);
                     }
                 }
