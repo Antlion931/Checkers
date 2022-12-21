@@ -2,12 +2,9 @@ package com.example.checkersgrid;
 
 public enum CheckerType
 {
-    WHITE(1), BLACK(-1);
+    WHITE, BLACK;
 
-    final int directionOfMovement;
-
-    CheckerType(int direction)
+    CheckerType()
     {
-        directionOfMovement = direction;
     }
 }

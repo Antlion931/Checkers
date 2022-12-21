@@ -29,8 +29,6 @@ public class GridTile extends Rectangle
         }
 
         relocate(x * getWidth(), y * getHeight());
-        //setTranslateX(40);
-        //setTranslateY(40);
     }
     private void setSize(double W, double H)
     {
@@ -45,20 +43,24 @@ public class GridTile extends Rectangle
     {
         return piece;
     }
-    public void highlightTile()
+    public void highlightTile(boolean light)
     {
-        if(isHighlighted)
+        if(light)
         {
-            setSize(100, 100);
-            setStrokeWidth(0);
+            setStroke(Color.BLUE);
+            setSize(78,78);
+            setStrokeWidth(3);
         }
         else
         {
-            setStroke(Color.BLUE);
-            setSize(96,96);
-            setStrokeWidth(4);
+            setSize(80, 80);
+            setStrokeWidth(0);
         }
-        isHighlighted = !isHighlighted;
+        isHighlighted = light;
+    }
+    public boolean isHighlighted()
+    {
+        return isHighlighted;
     }
     public void setAtMovement(boolean movement)
     {
