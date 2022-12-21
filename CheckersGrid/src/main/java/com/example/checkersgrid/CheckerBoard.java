@@ -1,13 +1,8 @@
 package com.example.checkersgrid;
 
 import com.example.checkersgrid.judge.Board;
-import com.example.checkersgrid.judge.Cords;
-import com.example.checkersgrid.judge.Player;
 import javafx.scene.Group;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
-
-import java.util.List;
 
 public class CheckerBoard extends Pane
 {
@@ -50,15 +45,6 @@ public class CheckerBoard extends Pane
                 }
             }
         }
-
-//        List<List<Cords>> movesWHITE = judgeBoard.showAllPossibleMovesOfPlayer(Player.WHITE);
-//        System.out.println(judgeBoard.draw());
-//
-//        for(List<Cords> start : movesWHITE)
-//        {
-//            System.out.println(start.get(0).x + ", " + start.get(0).y);
-//            tiles[start.get(0).x][start.get(0).y].highlightTile(true);
-//        }
     }
 
     public void removePiece(int x, int y)

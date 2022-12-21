@@ -1,17 +1,9 @@
 package com.example.checkersgrid;
 
-import com.example.checkersgrid.judge.Board;
-import com.example.checkersgrid.judge.Cords;
-import com.example.checkersgrid.judge.Player;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class RunCheckers extends Application
 {

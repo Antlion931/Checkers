@@ -5,6 +5,9 @@ import com.example.checkersgrid.judge.Cords;
 import com.example.checkersgrid.judge.Player;
 import javafx.scene.input.MouseButton;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 public class GameController
@@ -29,10 +32,12 @@ public class GameController
     {
         moves = judge.showAllPossibleMovesOfPlayer(player);
         attacks = judge.showAllPossibleAttacksOfPlayer(player);
+        Collections.sort(attacks, (o1, o2) -> o2.size() - o1.size());
+
+        turnOffFields();
 
         if(attacks.isEmpty())
         {
-            System.out.println("Brak ataków");
             for(List<Cords> start : moves)
             {
                 viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
@@ -40,10 +45,12 @@ public class GameController
         }
         else
         {
-            System.out.println("Możliwy atak");
             for(List<Cords> start : attacks)
             {
-                viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
+                if(start.size() == attacks.get(0).size())
+                {
+                    viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
+                }
             }
         }
 
@@ -70,9 +77,12 @@ public class GameController
                     {
                         for(List<Cords> attack : attacks)
                         {
-                            if(xPosition == attack.get(0).x && yPosition == attack.get(0).y)
+                            if(attack.size() == attacks.get(0).size())
                             {
-                                viewBoard.getTiles()[attack.get(1).x][attack.get(1).y].highlightTile(true);
+                                if(xPosition == attack.get(0).x && yPosition == attack.get(0).y)
+                                {
+                                    viewBoard.getTiles()[attack.get(1).x][attack.get(1).y].highlightTile(true);
+                                }
                             }
                         }
                     }
@@ -94,7 +104,6 @@ public class GameController
                     viewBoard.getTiles()[dirXPosition][dirYPosition].setPiece(viewBoard.getTiles()[xPos][yPos].getPiece());
                     viewBoard.getTiles()[xPos][yPos].setPiece(null);
                     viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece().placeChecker(dirXPosition, dirYPosition);
-                    viewBoard.getTiles()[xPos][yPos].setAtMovement(false);
                     viewBoard.setOnMouseClicked(null);
 
                     if(attacks.isEmpty())
@@ -114,21 +123,29 @@ public class GameController
                     {
                         for(List<Cords> attack : attacks)
                         {
-                            if(xPos == attack.get(0).x && yPos == attack.get(0).y)
+                            if(attack.size() == 2)
                             {
-                                if(dirXPosition == attack.get(1).x && dirYPosition == attack.get(1).y)
+                                if(xPos == attack.get(0).x && yPos == attack.get(0).y)
                                 {
-                                    int xStrike = ((xPos + dirXPosition) / 2);
-                                    int yStrike = ((yPos + dirYPosition) / 2);
-                                    viewBoard.removePiece(xStrike, yStrike);
-                                    judge.update(attack);
+                                    if(dirXPosition == attack.get(1).x && dirYPosition == attack.get(1).y)
+                                    {
+                                        int xStrike = ((xPos + dirXPosition) / 2);
+                                        int yStrike = ((yPos + dirYPosition) / 2);
+                                        viewBoard.removePiece(xStrike, yStrike);
+                                        judge.update(attack);
+                                        if(attacks.get(0).size() > 2)
+                                        {
+                                            firstClick();
+                                            return;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                     
                     turnOffFields();
-                    
+
                     if(player == Player.WHITE)
                     {
                         player = Player.BLACK;

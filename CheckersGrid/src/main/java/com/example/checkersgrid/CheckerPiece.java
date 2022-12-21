@@ -29,10 +29,6 @@ public class CheckerPiece extends Circle
 
         setMouseTransparent(true);
     }
-    public CheckerType getCheckerType()
-    {
-        return checkerType;
-    }
     public void placeChecker(int x, int y)
     {
         relocate(x * 80, y * 80);
