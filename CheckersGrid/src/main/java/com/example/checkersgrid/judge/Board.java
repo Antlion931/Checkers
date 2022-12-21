@@ -135,7 +135,9 @@ public class Board {
             for(int i = 0; i < move.size() - 1; i++) {
                 body = performAttack(move.get(i), move.get(i + 1)).body;
             }
-            body[move.get(move.size() - 1).x][move.get(move.size() - 1).y] = CheckersFactory.getInstance().makeQueenForPlayer(body[move.get(move.size() - 1).x][move.get(move.size() - 1).y].player);
+            if(willBeQueen) {
+                body[move.get(move.size() - 1).x][move.get(move.size() - 1).y] = CheckersFactory.getInstance().makeQueenForPlayer(body[move.get(move.size() - 1).x][move.get(move.size() - 1).y].player);
+            }
         }
     }
 

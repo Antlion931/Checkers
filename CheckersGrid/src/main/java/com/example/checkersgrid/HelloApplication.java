@@ -15,8 +15,10 @@ public class HelloApplication extends Application {
 
     public static void main(String[] args) {
         Board board = new Board(8, 0);
-        board.body[2][2] = CheckersFactory.getInstance().makeCheckerForPlayer(Player.WHITE);
-        board.body[3][1] = CheckersFactory.getInstance().makeCheckerForPlayer(Player.BLACK);
+        board.body[3][5] = CheckersFactory.getInstance().makeCheckerForPlayer(Player.BLACK);
+        board.body[4][6] = CheckersFactory.getInstance().makeCheckerForPlayer(Player.WHITE);
+        board.body[6][6] = CheckersFactory.getInstance().makeCheckerForPlayer(Player.WHITE);
+
 
         System.out.println(board.draw());
         System.out.println("Black possible moves: ");
@@ -70,7 +72,7 @@ public class HelloApplication extends Application {
             System.out.println();
         }
 
-        board.update(attacksWHITE10.get(0));
+        board.update(attacksBLACK10.get(1));
 
         System.out.println(board.draw());
         System.out.println("Black possible moves: ");
