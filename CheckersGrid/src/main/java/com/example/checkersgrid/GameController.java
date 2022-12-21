@@ -30,29 +30,53 @@ public class GameController
         moves = judge.showAllPossibleMovesOfPlayer(player);
         attacks = judge.showAllPossibleAttacksOfPlayer(player);
 
-        for(List<Cords> start : moves)
+        if(attacks.isEmpty())
         {
-            viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
+            System.out.println("Brak ataków");
+            for(List<Cords> start : moves)
+            {
+                viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
+            }
         }
+        else
+        {
+            System.out.println("Możliwy atak");
+            for(List<Cords> start : attacks)
+            {
+                viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
+            }
+        }
+
         viewBoard.setOnMouseClicked(mouseEvent -> {
             int xPosition = (int) (mouseEvent.getSceneX()/80);
             int yPosition = (int) (mouseEvent.getSceneY()/80);
-//            if(mouseEvent.getButton().equals(MouseButton.SECONDARY))
-//            {
-//                viewBoard.removePiece(xPosition, yPosition);
-//            }
             if(mouseEvent.getButton().equals(MouseButton.PRIMARY))
             {
                 if(viewBoard.getTiles()[xPosition][yPosition].getPiece() != null && viewBoard.getTiles()[xPosition][yPosition].isHighlighted())
                 {
                     turnOffFields();
-                    for(List<Cords> move : moves)
+
+                    if(attacks.isEmpty())
                     {
-                        if(xPosition == move.get(0).x && yPosition == move.get(0).y)
+                        for(List<Cords> move : moves)
                         {
-                            viewBoard.getTiles()[move.get(1).x][move.get(1).y].highlightTile(true);
+                            if(xPosition == move.get(0).x && yPosition == move.get(0).y)
+                            {
+                                viewBoard.getTiles()[move.get(1).x][move.get(1).y].highlightTile(true);
+                            }
                         }
                     }
+                    else
+                    {
+                        for(List<Cords> attack : attacks)
+                        {
+                            if(xPosition == attack.get(0).x && yPosition == attack.get(0).y)
+                            {
+                                viewBoard.getTiles()[attack.get(1).x][attack.get(1).y].highlightTile(true);
+                            }
+                        }
+                    }
+
                     secondClick(xPosition, yPosition);
                 }
             }
@@ -72,17 +96,39 @@ public class GameController
                     viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece().placeChecker(dirXPosition, dirYPosition);
                     viewBoard.getTiles()[xPos][yPos].setAtMovement(false);
                     viewBoard.setOnMouseClicked(null);
-                    for(List<Cords> move : moves)
+
+                    if(attacks.isEmpty())
                     {
-                        if(xPos == move.get(0).x && yPos == move.get(0).y)
+                        for(List<Cords> move : moves)
                         {
-                            if(dirXPosition == move.get(1).x && dirYPosition == move.get(1).y)
+                            if(xPos == move.get(0).x && yPos == move.get(0).y)
                             {
-                                judge.update(move);
+                                if(dirXPosition == move.get(1).x && dirYPosition == move.get(1).y)
+                                {
+                                    judge.update(move);
+                                }
                             }
                         }
                     }
+                    else
+                    {
+                        for(List<Cords> attack : attacks)
+                        {
+                            if(xPos == attack.get(0).x && yPos == attack.get(0).y)
+                            {
+                                if(dirXPosition == attack.get(1).x && dirYPosition == attack.get(1).y)
+                                {
+                                    int xStrike = ((xPos + dirXPosition) / 2);
+                                    int yStrike = ((yPos + dirYPosition) / 2);
+                                    viewBoard.removePiece(xStrike, yStrike);
+                                    judge.update(attack);
+                                }
+                            }
+                        }
+                    }
+                    
                     turnOffFields();
+                    
                     if(player == Player.WHITE)
                     {
                         player = Player.BLACK;
@@ -91,6 +137,7 @@ public class GameController
                     {
                         player = Player.WHITE;
                     }
+                    
                     firstClick();
                 }
             }
