@@ -48,6 +48,7 @@ public class CheckerPiece extends Circle
     public void makeQueen()
     {
         setStroke(Color.GOLD);
+        setRadius(27);
         setStrokeWidth(8);
     }
 }

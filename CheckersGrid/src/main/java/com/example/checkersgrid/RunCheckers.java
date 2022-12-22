@@ -22,7 +22,6 @@ public class RunCheckers extends Application
         GameController gameController = new GameController(board);
         gameController.startGame();
 
-        //Scene scene = new Scene(board, (80 * numberOfTiles + 80), (80 * numberOfTiles + 80));
         Scene scene = new Scene(board, (80 * numberOfTiles), (80 * numberOfTiles));
         scene.setFill(Color.SEAGREEN);
         stage.setResizable(false);

@@ -4,10 +4,7 @@ import com.example.checkersgrid.judge.Board;
 import com.example.checkersgrid.judge.Cords;
 import com.example.checkersgrid.judge.Player;
 import javafx.scene.input.MouseButton;
-
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 public class GameController
@@ -129,40 +126,21 @@ public class GameController
                                 {
                                     if(dirXPosition == attack.get(1).x && dirYPosition == attack.get(1).y)
                                     {
-                                        int xDir, yDir;
-//                                        int xStrike = ((xPos + dirXPosition) / 2);
-//                                        int yStrike = ((yPos + dirYPosition) / 2);
-//                                        viewBoard.removePiece(xStrike, yStrike);
-                                        if(dirXPosition - xPos > 0)
-                                        {
-                                            xDir = 1;
-                                        }
-                                        else
-                                        {
-                                            xDir = -1;
-                                        }
-                                        System.out.println(xDir);
-                                        if(dirYPosition - yPos > 0)
-                                        {
-                                            yDir = 1;
-                                        }
-                                        else
-                                        {
-                                            yDir = -1;
-                                        }
-                                        System.out.println(yDir);
                                         int currentX = xPos;
                                         int currnetY = yPos;
+                                        int changeOnX = dirXPosition - xPos != 0 ? (dirXPosition - xPos) / Math.abs((dirXPosition - xPos)) : 0;
+                                        int changeOnY = dirYPosition - yPos != 0 ? (dirYPosition - yPos) / Math.abs((dirYPosition - yPos)) : 0;
                                         while(true)
                                         {
-                                            currentX += xDir;
-                                            currnetY += yDir;
+                                            currentX += changeOnX;
+                                            currnetY += changeOnY;
                                             if(viewBoard.getTiles()[currentX][currnetY].getPiece() != null)
                                             {
                                                 viewBoard.removePiece(currentX, currnetY);
                                                 break;
                                             }
                                         }
+
                                         judge.update(attack);
                                         if(attacks.get(0).size() > 2)
                                         {
