@@ -14,11 +14,11 @@ public class CheckersFactory {
     private CheckersFactory() {
 
     }
-    public Checker makeCheckerForPlayer(Player player) {
+    public Checker makeCheckerForPlayer(PlayerInterface player) {
         return new NormalChecker(player);
     }
 
-    public Checker makeQueenForPlayer(Player player) {
+    public Checker makeQueenForPlayer(PlayerInterface player) {
         return new QueenChecker(player);
     }
 }

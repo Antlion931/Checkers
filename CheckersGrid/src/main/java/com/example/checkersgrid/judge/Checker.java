@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract public class Checker {
-    public Player player;
+    public PlayerInterface player;
 
-    public Checker(Player player) {
+    public Checker(PlayerInterface player) {
         this.player = player;
     }
 
