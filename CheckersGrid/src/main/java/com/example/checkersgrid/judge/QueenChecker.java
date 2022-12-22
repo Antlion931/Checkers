@@ -51,13 +51,30 @@ public class QueenChecker extends Checker{
                         simple.add(1, board.getCordsFrom(him, c.multiply(i)));
                         result.add(simple);
 
-                        List<List<Cords>> potentialNextMoves = continoue_attack(board.performAttack(him, board.getCordsFrom(him, c.multiply(i))), board.getCordsFrom(him, c.multiply(i)), c);
+                        List<List<Cords>> potentialNextAttacks = continoue_attack(board.performAttack(him, board.getCordsFrom(him, c.multiply(i))), board.getCordsFrom(him, c.multiply(i)), c);
 
-                        for(List<Cords> lc : potentialNextMoves) {
+                        for(List<Cords> lc : potentialNextAttacks) {
                             lc.add(0, him);
                             lc.add(1, board.getCordsFrom(him, c.multiply(i)));
                             result.add(lc);
                         }
+
+                        potentialNextAttacks = continoue_attack(board.performAttack(him, board.getCordsFrom(him, c.multiply(i))), board.getCordsFrom(him, c.multiply(i)), c.rotateRight());
+
+                        for(List<Cords> lc : potentialNextAttacks) {
+                            lc.add(0, him);
+                            lc.add(1, board.getCordsFrom(him, c.multiply(i)));
+                            result.add(lc);
+                        }
+
+                        potentialNextAttacks = continoue_attack(board.performAttack(him, board.getCordsFrom(him, c.multiply(i))), board.getCordsFrom(him, c.multiply(i)), c.rotateLeft());
+
+                        for(List<Cords> lc : potentialNextAttacks) {
+                            lc.add(0, him);
+                            lc.add(1, board.getCordsFrom(him, c.multiply(i)));
+                            result.add(lc);
+                        }
+
                     }
                 }
 
@@ -77,9 +94,23 @@ public class QueenChecker extends Checker{
                     simple.add(0, board.getCordsFrom(him, vector.multiply(i)));
                     result.add(simple);
 
-                    List<List<Cords>> potentialNextMoves = continoue_attack(board.performAttack(him, board.getCordsFrom(him, vector.multiply(i))), board.getCordsFrom(him, vector.multiply(i)), vector);
+                    List<List<Cords>> potentialNextAttacks = continoue_attack(board.performAttack(him, board.getCordsFrom(him, vector.multiply(i))), board.getCordsFrom(him, vector.multiply(i)), vector);
 
-                    for(List<Cords> lc : potentialNextMoves) {
+                    for(List<Cords> lc : potentialNextAttacks) {
+                        lc.add(0, board.getCordsFrom(him, vector.multiply(i)));
+                        result.add(lc);
+                    }
+
+                    potentialNextAttacks = continoue_attack(board.performAttack(him, board.getCordsFrom(him, vector.multiply(i))), board.getCordsFrom(him, vector.multiply(i)), vector.rotateRight());
+
+                    for(List<Cords> lc : potentialNextAttacks) {
+                        lc.add(0, board.getCordsFrom(him, vector.multiply(i)));
+                        result.add(lc);
+                    }
+
+                    potentialNextAttacks = continoue_attack(board.performAttack(him, board.getCordsFrom(him, vector.multiply(i))), board.getCordsFrom(him, vector.multiply(i)), vector.rotateLeft());
+
+                    for(List<Cords> lc : potentialNextAttacks) {
                         lc.add(0, board.getCordsFrom(him, vector.multiply(i)));
                         result.add(lc);
                     }

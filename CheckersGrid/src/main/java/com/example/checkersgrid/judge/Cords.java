@@ -26,4 +26,12 @@ public class Cords {
     public Cords multiply(int k) {
         return new Cords(x*k, y*k);
     }
+
+    public Cords rotateRight() {
+        return new Cords(-y, x);
+    }
+
+    public  Cords rotateLeft() {
+        return new Cords(y, -x);
+    }
 }
