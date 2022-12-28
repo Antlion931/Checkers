@@ -7,11 +7,13 @@ public class CheckerPiece extends Circle
 {
     private final CheckerType checkerType;
     private final int Size;
+    private boolean isStriking;
     public CheckerPiece(CheckerType type, int x, int y, int boardSize)
     {
         super();
         checkerType = type;
         Size = boardSize;
+        isStriking = false;
         setRadius(30);
         setStroke(Color.BLACK);
         setStrokeWidth(2);
@@ -50,5 +52,13 @@ public class CheckerPiece extends Circle
         setStroke(Color.GOLD);
         setRadius(27);
         setStrokeWidth(8);
+    }
+    public void duringStrike(boolean strike)
+    {
+        isStriking = strike;
+    }
+    public boolean strikingState()
+    {
+        return isStriking;
     }
 }

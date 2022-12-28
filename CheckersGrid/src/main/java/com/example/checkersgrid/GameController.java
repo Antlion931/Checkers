@@ -3,25 +3,28 @@ package com.example.checkersgrid;
 import com.example.checkersgrid.judge.Board;
 import com.example.checkersgrid.judge.Cords;
 import com.example.checkersgrid.judge.Player;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseButton;
-import java.util.Collections;
+import javafx.stage.Stage;
 import java.util.List;
+import java.util.Optional;
 
 public class GameController
 {
     private final CheckerBoard viewBoard;
-    private final Board judge;
+    private Board judge;
     private Player player;
     private List<List<Cords>> moves;
     private List<List<Cords>> attacks;
     public GameController(CheckerBoard board)
     {
         viewBoard = board;
-        judge = board.getJudgeBoard();
     }
 
     public void startGame()
     {
+        judge = viewBoard.getJudgeBoard();
         player = Player.WHITE;
         firstClick();
     }
@@ -29,11 +32,37 @@ public class GameController
     {
         moves = judge.showAllPossibleMovesOfPlayer(player);
         attacks = judge.showAllPossibleAttacksOfPlayer(player);
-        Collections.sort(attacks, (o1, o2) -> o2.size() - o1.size());
+        attacks.sort((o1, o2) -> o2.size() - o1.size());
 
         turnOffFields();
 
-        if(attacks.isEmpty())
+        if(attacks.isEmpty() && moves.isEmpty())
+        {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("GAME OVER");
+            if(player == Player.WHITE)
+            {
+                alert.setHeaderText(Player.BLACK + " WINS");
+            }
+            else
+            {
+                alert.setHeaderText(Player.WHITE + " WINS");
+            }
+            alert.setContentText("PLAY AGAIN?");
+            Optional<ButtonType> result = alert.showAndWait();
+            ButtonType button = result.orElse(ButtonType.CANCEL);
+            Stage stage = (Stage) viewBoard.getScene().getWindow();
+            if(button == ButtonType.OK)
+            {
+                viewBoard.createNew();
+                startGame();
+            }
+            else
+            {
+                stage.close();
+            }
+        }
+        else if(attacks.isEmpty())
         {
             for(List<Cords> start : moves)
             {
@@ -46,6 +75,12 @@ public class GameController
             {
                 if(start.size() == attacks.get(0).size())
                 {
+                    if(viewBoard.getTiles()[start.get(0).x][start.get(0).y].getPiece().strikingState())
+                    {
+                        turnOffFields();
+                        viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
+                        break;
+                    }
                     viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
                 }
             }
@@ -101,6 +136,7 @@ public class GameController
                     viewBoard.getTiles()[dirXPosition][dirYPosition].setPiece(viewBoard.getTiles()[xPos][yPos].getPiece());
                     viewBoard.getTiles()[xPos][yPos].setPiece(null);
                     viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece().placeChecker(dirXPosition, dirYPosition);
+                    viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece().duringStrike(true);
                     viewBoard.setOnMouseClicked(null);
 
                     if(attacks.isEmpty())
@@ -163,7 +199,8 @@ public class GameController
                     {
                         player = Player.WHITE;
                     }
-                    
+
+                    viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece().duringStrike(false);
                     firstClick();
                 }
             }

@@ -18,7 +18,7 @@ public class RunCheckers extends Application
         //hard coded number of tiles, for testing purposes
         int numberOfTiles = 8;
 
-        CheckerBoard board = new CheckerBoard(numberOfTiles);
+        CheckerBoard board = new CheckerBoard(numberOfTiles, 3);
         GameController gameController = new GameController(board);
         gameController.startGame();
 
