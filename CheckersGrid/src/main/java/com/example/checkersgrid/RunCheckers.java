@@ -15,14 +15,8 @@ public class RunCheckers extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
-        //hard coded number of tiles, for testing purposes
-        int numberOfTiles = 8;
-
-        CheckerBoard board = new CheckerBoard(numberOfTiles, 3);
-        GameController gameController = new GameController(board);
-        gameController.startGame();
-
-        Scene scene = new Scene(board, (80 * numberOfTiles), (80 * numberOfTiles));
+        GameMenu board = new GameMenu();
+        Scene scene = new Scene(board, 500, 500);
         scene.setFill(Color.SEAGREEN);
         stage.setResizable(false);
         stage.setScene(scene);

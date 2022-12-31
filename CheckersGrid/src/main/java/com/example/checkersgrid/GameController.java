@@ -3,28 +3,33 @@ package com.example.checkersgrid;
 import com.example.checkersgrid.judge.Board;
 import com.example.checkersgrid.judge.Cords;
 import com.example.checkersgrid.judge.Player;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.util.List;
 import java.util.Optional;
 
 public class GameController
 {
-    private final CheckerBoard viewBoard;
+    private final SimpleBoard board;
+    private final Pane viewBoard;
     private Board judge;
     private Player player;
     private List<List<Cords>> moves;
     private List<List<Cords>> attacks;
-    public GameController(CheckerBoard board)
+    public GameController(SimpleBoard board)
     {
-        viewBoard = board;
+        this.board = board;
+        viewBoard = board.getPane();
     }
 
     public void startGame()
     {
-        judge = viewBoard.getJudgeBoard();
+        judge = board.getJudgeBoard();
         player = Player.WHITE;
         firstClick();
     }
@@ -40,13 +45,27 @@ public class GameController
         {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("GAME OVER");
-            if(player == Player.WHITE)
+            if(board.getWinCondition())
             {
-                alert.setHeaderText(Player.BLACK + " WINS");
+                if(player == Player.WHITE)
+                {
+                    alert.setHeaderText(Player.BLACK + " WINS");
+                }
+                else
+                {
+                    alert.setHeaderText(Player.WHITE + " WINS");
+                }
             }
             else
             {
-                alert.setHeaderText(Player.WHITE + " WINS");
+                if(player == Player.WHITE)
+                {
+                    alert.setHeaderText(Player.WHITE + " WINS");
+                }
+                else
+                {
+                    alert.setHeaderText(Player.BLACK + " WINS");
+                }
             }
             alert.setContentText("PLAY AGAIN?");
             Optional<ButtonType> result = alert.showAndWait();
@@ -54,19 +73,24 @@ public class GameController
             Stage stage = (Stage) viewBoard.getScene().getWindow();
             if(button == ButtonType.OK)
             {
-                viewBoard.createNew();
+                board.createNew();
                 startGame();
             }
             else
             {
-                stage.close();
+                GameMenu board = new GameMenu();
+                Scene scene = new Scene(board, 500, 500);
+                scene.setFill(Color.SEAGREEN);
+                stage.setResizable(false);
+                stage.setScene(scene);
+                //stage.close();
             }
         }
         else if(attacks.isEmpty())
         {
             for(List<Cords> start : moves)
             {
-                viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
+                board.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
             }
         }
         else
@@ -75,13 +99,13 @@ public class GameController
             {
                 if(start.size() == attacks.get(0).size())
                 {
-                    if(viewBoard.getTiles()[start.get(0).x][start.get(0).y].getPiece().strikingState())
+                    if(board.getTiles()[start.get(0).x][start.get(0).y].getPiece().strikingState())
                     {
                         turnOffFields();
-                        viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
+                        board.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
                         break;
                     }
-                    viewBoard.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
+                    board.getTiles()[start.get(0).x][start.get(0).y].highlightTile(true);
                 }
             }
         }
@@ -91,7 +115,7 @@ public class GameController
             int yPosition = (int) (mouseEvent.getSceneY()/80);
             if(mouseEvent.getButton().equals(MouseButton.PRIMARY))
             {
-                if(viewBoard.getTiles()[xPosition][yPosition].getPiece() != null && viewBoard.getTiles()[xPosition][yPosition].isHighlighted())
+                if(board.getTiles()[xPosition][yPosition].getPiece() != null && board.getTiles()[xPosition][yPosition].isHighlighted())
                 {
                     turnOffFields();
 
@@ -101,7 +125,7 @@ public class GameController
                         {
                             if(xPosition == move.get(0).x && yPosition == move.get(0).y)
                             {
-                                viewBoard.getTiles()[move.get(1).x][move.get(1).y].highlightTile(true);
+                                board.getTiles()[move.get(1).x][move.get(1).y].highlightTile(true);
                             }
                         }
                     }
@@ -113,7 +137,7 @@ public class GameController
                             {
                                 if(xPosition == attack.get(0).x && yPosition == attack.get(0).y)
                                 {
-                                    viewBoard.getTiles()[attack.get(1).x][attack.get(1).y].highlightTile(true);
+                                    board.getTiles()[attack.get(1).x][attack.get(1).y].highlightTile(true);
                                 }
                             }
                         }
@@ -131,12 +155,12 @@ public class GameController
             int dirYPosition = (int) (mouseEvent1.getSceneY()/80);
             if(mouseEvent1.getButton().equals(MouseButton.PRIMARY))
             {
-                if(viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece() == null && viewBoard.getTiles()[dirXPosition][dirYPosition].isHighlighted())
+                if(board.getTiles()[dirXPosition][dirYPosition].getPiece() == null && board.getTiles()[dirXPosition][dirYPosition].isHighlighted())
                 {
-                    viewBoard.getTiles()[dirXPosition][dirYPosition].setPiece(viewBoard.getTiles()[xPos][yPos].getPiece());
-                    viewBoard.getTiles()[xPos][yPos].setPiece(null);
-                    viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece().placeChecker(dirXPosition, dirYPosition);
-                    viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece().duringStrike(true);
+                    board.getTiles()[dirXPosition][dirYPosition].setPiece(board.getTiles()[xPos][yPos].getPiece());
+                    board.getTiles()[xPos][yPos].setPiece(null);
+                    board.getTiles()[dirXPosition][dirYPosition].getPiece().placeChecker(dirXPosition, dirYPosition);
+                    board.getTiles()[dirXPosition][dirYPosition].getPiece().duringStrike(true);
                     viewBoard.setOnMouseClicked(null);
 
                     if(attacks.isEmpty())
@@ -170,9 +194,9 @@ public class GameController
                                         {
                                             currentX += changeOnX;
                                             currnetY += changeOnY;
-                                            if(viewBoard.getTiles()[currentX][currnetY].getPiece() != null)
+                                            if(board.getTiles()[currentX][currnetY].getPiece() != null)
                                             {
-                                                viewBoard.removePiece(currentX, currnetY);
+                                                board.removePiece(currentX, currnetY);
                                                 break;
                                             }
                                         }
@@ -200,7 +224,7 @@ public class GameController
                         player = Player.WHITE;
                     }
 
-                    viewBoard.getTiles()[dirXPosition][dirYPosition].getPiece().duringStrike(false);
+                    board.getTiles()[dirXPosition][dirYPosition].getPiece().duringStrike(false);
                     firstClick();
                 }
             }
@@ -208,7 +232,7 @@ public class GameController
     }
     private void turnOffFields()
     {
-        for(GridTile[] column : viewBoard.getTiles())
+        for(GridTile[] column : board.getTiles())
         {
             for(GridTile tile : column)
             {
