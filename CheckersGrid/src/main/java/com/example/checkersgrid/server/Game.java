@@ -202,7 +202,7 @@ public class Game {
                 opponent.output.println("OPPONENT_MOVED " + ListFunction.string(m));
                 if (board.showAllPossibleAttacksOfPlayer(opponent.playerId).size() == 0 && board.showAllPossibleMovesOfPlayer(opponent.playerId).size() == 0) {
                     opponent.output.println("NO_MOVES " + opponent.playerId.getShortcut());
-                    output.println("NO");
+                    output.println("NO_MOVES " + opponent.playerId.getShortcut());
                 }
             } catch (IllegalStateException e) {
                 output.println("MESSAGE " + e.getMessage());

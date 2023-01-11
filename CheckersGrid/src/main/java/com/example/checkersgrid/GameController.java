@@ -71,11 +71,38 @@ public class GameController
                 } else if (command.startsWith("OPPONENT_MOVED")) {
                     List<Cords> move = ListFunction.fromResponse(command.replace("OPPONENT_MOVED ", ""));
                     judge.update(move);
-                    //TODO: update
                     update(move);
                     firstClick();
                 } else if (command.startsWith("NO_MOVES")) {
                     //TODO:
+                    System.out.println(command.replace("NO_MOVES ", ""));
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("GAME OVER");
+                    if(board.getWinCondition())
+                    {
+                        if(command.replace("NO_MOVES ", "").equals("w"))
+                        {
+                            alert.setHeaderText(Player.BLACK + " WINS");
+                        }
+                        else
+                        {
+                            System.out.println("Weszlo");
+                            alert.setHeaderText(Player.WHITE + " WINS");
+                        }
+                    }
+                    else
+                    {
+                        if(command.replace("NO_MOVES ", "").equals("w"))
+                        {
+                            alert.setHeaderText(Player.WHITE + " WINS");
+                        }
+                        else
+                        {
+                            alert.setHeaderText(Player.BLACK + " WINS");
+                        }
+                    }
+                    alert.setContentText("GOOD JOB");
+                    alert.show();
                 }
             }
         } catch (IOException e) {
@@ -137,23 +164,6 @@ public class GameController
                 }
             }
             alert.setContentText("PLAY AGAIN?");
-            Optional<ButtonType> result = alert.showAndWait();
-            ButtonType button = result.orElse(ButtonType.CANCEL);
-            Stage stage = (Stage) viewBoard.getScene().getWindow();
-            if(button == ButtonType.OK)
-            {
-                board.createNew();
-                startGame();
-            }
-            else
-            {
-                GameMenu board = new GameMenu();
-                Scene scene = new Scene(board, 500, 500);
-                scene.setFill(Color.SEAGREEN);
-                stage.setResizable(false);
-                stage.setScene(scene);
-                //stage.close();
-            }
         }
         else if(attacks.isEmpty())
         {
@@ -329,7 +339,7 @@ public class GameController
             int xDif = Math.abs(move.get(i + 1).x - move.get(i).x);
             int yDif = Math.abs(move.get(i + 1).y - move.get(i).y);
 
-            if(xDif == 2 || yDif == 2)
+            if(xDif >= 2 || yDif >= 2)
             {
                 int currentX = move.get(i).x;
                 int currnetY = move.get(i).y;
@@ -347,23 +357,5 @@ public class GameController
                 }
             }
         }
-
-//        if(xDif == 2 || yDif == 2)
-//        {
-//            int currentX = move.get(0).x;
-//            int currnetY = move.get(0).y;
-//            int changeOnX = move.get(1).x - move.get(0).x != 0 ? (move.get(1).x - move.get(0).x) / Math.abs((move.get(1).x - move.get(0).x)) : 0;
-//            int changeOnY = move.get(1).y - move.get(0).y != 0 ? (move.get(1).y - move.get(0).y) / Math.abs((move.get(1).y - move.get(0).y)) : 0;
-//            while(true)
-//            {
-//                currentX += changeOnX;
-//                currnetY += changeOnY;
-//                if(board.getTiles()[currentX][currnetY].getPiece() != null)
-//                {
-//                    board.removePiece(currentX, currnetY);
-//                    break;
-//                }
-//            }
-//        }
     }
 }
