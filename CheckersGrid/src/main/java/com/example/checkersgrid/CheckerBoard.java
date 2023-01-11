@@ -9,14 +9,11 @@ public class CheckerBoard extends Pane
     private final GridTile[][] tiles;
     private final Group checkerTileGroup;
     private final Group checkerPieceGroup;
-    private final Board judgeBoard;
 
     public CheckerBoard(int size)
     {
         checkerTileGroup = new Group();
         checkerPieceGroup = new Group();
-        //hardcoded number or player rows
-        judgeBoard = new Board(size, 3);
         tiles = new GridTile[size][size];
         getChildren().addAll(checkerTileGroup, checkerPieceGroup);
 
@@ -47,16 +44,45 @@ public class CheckerBoard extends Pane
         }
     }
 
+    public synchronized void update(String draw) {
+        for(int x = 0; x < tiles.length; x++) {
+            for (int y = 0; y < tiles.length; y++) {
+                if(draw.split("\n")[y + 1].charAt(x) == 'b')
+                {
+                    var piece = new CheckerPiece(CheckerType.BLACK, x, y, tiles.length);
+                    tiles[x][y].setPiece(piece);
+                    checkerPieceGroup.getChildren().add(piece);
+                } else if(draw.split("\n")[y + 1].charAt(x) == 'w')
+                {
+                    var piece = new CheckerPiece(CheckerType.WHITE, x, y, tiles.length);
+                    tiles[x][y].setPiece(piece);
+                    checkerPieceGroup.getChildren().add(piece);
+                }else if(draw.split("\n")[y + 1].charAt(x) == 'B')
+                {
+                    var piece = new CheckerPiece(CheckerType.BLACK, x, y, tiles.length);
+                    piece.makeQueen();
+                    tiles[x][y].setPiece(piece);
+                    checkerPieceGroup.getChildren().add(piece);
+                } else if(draw.split("\n")[y + 1].charAt(x) == 'W')
+                {
+                    var piece = new CheckerPiece(CheckerType.WHITE, x, y, tiles.length);
+                    piece.makeQueen();
+                    tiles[x][y].setPiece(piece);
+                    checkerPieceGroup.getChildren().add(piece);
+                }  else {
+                    removePiece(x, y);
+                }
+            }
+        }
+    }
+
     public void removePiece(int x, int y)
     {
         checkerPieceGroup.getChildren().remove(tiles[x][y].getPiece());
         tiles[x][y].setPiece(null);
     }
-    public Board getJudgeBoard()
-    {
-        return judgeBoard;
-    }
-    public GridTile[][] getTiles() {
+
+    public synchronized GridTile[][] getTiles() {
         return tiles;
     }
 }

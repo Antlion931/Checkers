@@ -1,5 +1,6 @@
 package com.example.checkersgrid.server;
 
+import com.example.checkersgrid.ListFunction.ListFunction;
 import com.example.checkersgrid.judge.Board;
 import com.example.checkersgrid.judge.Cords;
 import com.example.checkersgrid.judge.Player;
@@ -75,6 +76,8 @@ public class Game {
 
     public synchronized String showPossibleAttacksOfPlayer(PlayerInterface player) {
         String result = new String();
+        result += board.showAllPossibleAttacksOfPlayer(player).size();
+        result += "\n";
         for(List<Cords> lc : board.showAllPossibleAttacksOfPlayer(player)) {
             for(Cords c : lc) {
                 result += c.x;
@@ -89,6 +92,8 @@ public class Game {
 
     public synchronized String showPossibleMovesOfPlayer(PlayerInterface player) {
         String result = new String();
+        result += board.showAllPossibleMovesOfPlayer(player).size();
+        result += "\n";
         for(List<Cords> lc : board.showAllPossibleMovesOfPlayer(player)) {
             for(Cords c : lc) {
                 result += c.x;
@@ -142,7 +147,7 @@ public class Game {
             } else {
                 opponent = currentPlayer;
                 opponent.opponent = this;
-                opponent.output.println("MESSAGE Your move");
+                opponent.output.println("YOUR TURN");
             }
         }
 
@@ -156,24 +161,12 @@ public class Game {
                 } else if (command.startsWith("ATTACKS")) {
                     output.println(showPossibleAttacksOfPlayer(playerId));
                 } else if (command.startsWith("MOVE")) {
-                    List<Cords> m = new ArrayList<Cords>();
-                    String[] arrOfStr = Arrays.copyOfRange(command.split(" ", 0), 1, command.split(" ", 0).length);
-                    for (String s : arrOfStr) {
-                        String[] cord = s.split(",", 2);
-                        m.add(new Cords(Integer.parseInt(cord[0]), Integer.parseInt(cord[1])));
-                    }
-                    String result = new String();
-                    for(Cords c : m) {
-                        result += c.x;
-                        result += ",";
-                        result += c.y;
-                        result += " ";
-                    }
-
-                    output.println(result);
+                    List<Cords> m = ListFunction.fromResponse(command.replace("MOVE ", ""));
 
                     processMoveCommand(m);
                 } else if (command.startsWith("PRINT")) {
+                    output.println("9\n");
+                    System.out.println(print());
                     output.println(print());
                 }
             }
