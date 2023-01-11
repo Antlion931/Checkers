@@ -4,8 +4,8 @@ public class BoardKlasyczne extends AbstractBoard
 {
     public BoardKlasyczne()
     {
-        boardSize = 4;
-        rowsNum = 1;
+        boardSize = 8;
+        rowsNum = 3;
         winConditionIsCheckerPresent = true;
         createNew();
     }

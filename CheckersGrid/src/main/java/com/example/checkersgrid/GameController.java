@@ -22,10 +22,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class GameController
 {
@@ -74,7 +71,6 @@ public class GameController
                     update(move);
                     firstClick();
                 } else if (command.startsWith("NO_MOVES")) {
-                    //TODO:
                     System.out.println(command.replace("NO_MOVES ", ""));
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("GAME OVER");
@@ -123,16 +119,24 @@ public class GameController
                 {
                     if(board.getTiles()[i][j].getPiece().strikingState())
                     {
+                        System.out.println("Striking at: " + i + " " + j);
+                        List<List<Cords>> strikingAttacks = new ArrayList<>();
                         for(List<Cords> attack : attacks)
                         {
-                            if(attack.get(0).x != i && attack.get(0).y != j)
+                            if(attack.get(0).x == i && attack.get(0).y == j)
                             {
-                                attacks.remove(attack);
+                                strikingAttacks.add(attack);
+                                System.out.println("attack removed");
                             }
                         }
+                        attacks = strikingAttacks;
                     }
                 }
             }
+        }
+        for(List<Cords> list : attacks)
+        {
+            System.out.println(ListFunction.string(list));
         }
 
         turnOffFields();
@@ -332,7 +336,6 @@ public class GameController
         board.getTiles()[end.x][end.y].setPiece(board.getTiles()[start.x][start.y].getPiece());
         board.getTiles()[start.x][start.y].setPiece(null);
         board.getTiles()[end.x][end.y].getPiece().placeChecker(end.x, end.y);
-        //board.getTiles()[move.get(1).x][move.get(1).y].getPiece().duringStrike(true);
 
         for(int i = 0; i < move.size() - 1; i ++)
         {
