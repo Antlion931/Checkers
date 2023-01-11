@@ -1,8 +1,12 @@
 package com.example.checkersgrid;
 
+import com.example.checkersgrid.ListFunction.ListFunction;
 import com.example.checkersgrid.judge.Board;
 import com.example.checkersgrid.judge.Cords;
 import com.example.checkersgrid.judge.Player;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -10,28 +14,77 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 public class GameController
 {
+    private PrintWriter out = null;
+    private BufferedReader in = null;
     private final SimpleBoard board;
     private final Pane viewBoard;
     private Board judge;
     private Player player;
     private List<List<Cords>> moves;
     private List<List<Cords>> attacks;
-    public GameController(SimpleBoard board)
+    public GameController(SimpleBoard board, BufferedReader in, PrintWriter out)
     {
         this.board = board;
+        this.in = in;
+        this.out = out;
         viewBoard = board.getPane();
     }
 
     public void startGame()
     {
         judge = board.getJudgeBoard();
-        player = Player.WHITE;
-        firstClick();
+        out.println("PLAYER");
+        String command = null;
+        try {
+            command = in.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (command.equals("w")) {
+            player = Player.WHITE;
+        } else {
+            player = Player.BLACK;
+        }
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), e -> checkServer()));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.playFromStart();
+    }
+
+    public void checkServer() {
+        try {
+            while (in.ready()) {
+                String command = in.readLine();
+                System.out.println(command);
+
+                if (command.startsWith("START")) {
+                    if (player == Player.WHITE) {
+                        firstClick();
+                    }
+                } else if (command.startsWith("OPPONENT_MOVED")) {
+                    List<Cords> move = ListFunction.fromResponse(command.replace("OPPONENT_MOVED ", ""));
+                    judge.update(move);
+                    //TODO: update
+                    firstClick();
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     private void firstClick()
     {
@@ -172,6 +225,7 @@ public class GameController
                                 if(dirXPosition == move.get(1).x && dirYPosition == move.get(1).y)
                                 {
                                     judge.update(move);
+                                    out.println("MOVE " + ListFunction.string(move));
                                 }
                             }
                         }
@@ -202,6 +256,8 @@ public class GameController
                                         }
 
                                         judge.update(attack);
+                                        out.println("MOVE " + ListFunction.string(attack));
+
                                         if(attacks.get(0).size() > 2)
                                         {
                                             firstClick();
@@ -215,17 +271,16 @@ public class GameController
                     
                     turnOffFields();
 
-                    if(player == Player.WHITE)
-                    {
-                        player = Player.BLACK;
-                    }
-                    else
-                    {
-                        player = Player.WHITE;
-                    }
+//                    if(player == Player.WHITE)
+//                    {
+//                        player = Player.BLACK;
+//                    }
+//                    else
+//                    {
+//                        player = Player.WHITE;
+//                    }
 
                     board.getTiles()[dirXPosition][dirYPosition].getPiece().duringStrike(false);
-                    firstClick();
                 }
             }
         });
