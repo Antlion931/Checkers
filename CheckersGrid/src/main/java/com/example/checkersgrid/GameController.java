@@ -49,19 +49,6 @@ public class GameController
     public void startGame()
     {
         judge = board.getJudgeBoard();
-        out.println("PLAYER");
-        String command = null;
-        try {
-            command = in.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        if (command.equals("w")) {
-            player = Player.WHITE;
-        } else {
-            player = Player.BLACK;
-        }
-
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), e -> checkServer()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.playFromStart();
@@ -69,13 +56,17 @@ public class GameController
 
     public void checkServer() {
         try {
+
             while (in.ready()) {
                 String command = in.readLine();
                 System.out.println(command);
 
                 if (command.startsWith("START")) {
-                    if (player == Player.WHITE) {
+                    if (command.replace("START ", "").charAt(0) == Player.WHITE.getShortcut()) {
+                        player = Player.WHITE;
                         firstClick();
+                    } else {
+                        player = Player.BLACK;
                     }
                 } else if (command.startsWith("OPPONENT_MOVED")) {
                     List<Cords> move = ListFunction.fromResponse(command.replace("OPPONENT_MOVED ", ""));
@@ -83,6 +74,8 @@ public class GameController
                     //TODO: update
                     update(move);
                     firstClick();
+                } else if (command.startsWith("NO_MOVES")) {
+                    //TODO:
                 }
             }
         } catch (IOException e) {
@@ -302,15 +295,6 @@ public class GameController
                     }
                     
                     turnOffFields();
-
-//                    if(player == Player.WHITE)
-//                    {
-//                        player = Player.BLACK;
-//                    }
-//                    else
-//                    {
-//                        player = Player.WHITE;
-//                    }
 
                     board.getTiles()[dirXPosition][dirYPosition].getPiece().duringStrike(false);
                 }
