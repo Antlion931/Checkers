@@ -75,8 +75,8 @@ public class Game {
     }
 
     public synchronized void startGame() {
-        currentPlayer.output.println("START");
-        currentPlayer.opponent.output.println("START");
+        currentPlayer.output.println("START " + currentPlayer.playerId.getShortcut());
+        currentPlayer.opponent.output.println("START " + currentPlayer.opponent.playerId.getShortcut());
     }
 
 
@@ -200,6 +200,10 @@ public class Game {
                 move(m, this);
                 output.println("VALID_MOVE");
                 opponent.output.println("OPPONENT_MOVED " + ListFunction.string(m));
+                if (board.showAllPossibleAttacksOfPlayer(opponent.playerId).size() == 0 && board.showAllPossibleMovesOfPlayer(opponent.playerId).size() == 0) {
+                    opponent.output.println("NO_MOVES " + opponent.playerId.getShortcut());
+                    output.println("NO");
+                }
             } catch (IllegalStateException e) {
                 output.println("MESSAGE " + e.getMessage());
             }
