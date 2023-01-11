@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -36,6 +37,7 @@ public class GameController
     private Player player;
     private List<List<Cords>> moves;
     private List<List<Cords>> attacks;
+    private List<Cords> ultraAttackSequence;
     public GameController(SimpleBoard board, BufferedReader in, PrintWriter out)
     {
         this.board = board;
@@ -79,6 +81,7 @@ public class GameController
                     List<Cords> move = ListFunction.fromResponse(command.replace("OPPONENT_MOVED ", ""));
                     judge.update(move);
                     //TODO: update
+                    update(move);
                     firstClick();
                 }
             }
@@ -91,6 +94,26 @@ public class GameController
         moves = judge.showAllPossibleMovesOfPlayer(player);
         attacks = judge.showAllPossibleAttacksOfPlayer(player);
         attacks.sort((o1, o2) -> o2.size() - o1.size());
+
+        for(int i = 0; i < board.getSize(); i++)
+        {
+            for(int j = 0; j < board.getSize(); j++)
+            {
+                if(board.getTiles()[i][j].getPiece() != null)
+                {
+                    if(board.getTiles()[i][j].getPiece().strikingState())
+                    {
+                        for(List<Cords> attack : attacks)
+                        {
+                            if(attack.get(0).x != i && attack.get(0).y != j)
+                            {
+                                attacks.remove(attack);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         turnOffFields();
 
@@ -256,13 +279,22 @@ public class GameController
                                         }
 
                                         judge.update(attack);
-                                        out.println("MOVE " + ListFunction.string(attack));
+                                        if(ultraAttackSequence == null)
+                                        {
+                                            ultraAttackSequence = attack;
+                                        }
+                                        else
+                                        {
+                                            ultraAttackSequence.add(attack.get(1));
+                                        }
 
                                         if(attacks.get(0).size() > 2)
                                         {
                                             firstClick();
                                             return;
                                         }
+                                        out.println("MOVE " + ListFunction.string(ultraAttackSequence));
+                                        ultraAttackSequence = null;
                                     }
                                 }
                             }
@@ -297,5 +329,57 @@ public class GameController
                 }
             }
         }
+    }
+    private void update(List<Cords> move)
+    {
+        Cords start = move.get(0);
+        Cords end = move.get(move.size() - 1);
+
+        board.getTiles()[end.x][end.y].setPiece(board.getTiles()[start.x][start.y].getPiece());
+        board.getTiles()[start.x][start.y].setPiece(null);
+        board.getTiles()[end.x][end.y].getPiece().placeChecker(end.x, end.y);
+        //board.getTiles()[move.get(1).x][move.get(1).y].getPiece().duringStrike(true);
+
+        for(int i = 0; i < move.size() - 1; i ++)
+        {
+            int xDif = Math.abs(move.get(i + 1).x - move.get(i).x);
+            int yDif = Math.abs(move.get(i + 1).y - move.get(i).y);
+
+            if(xDif == 2 || yDif == 2)
+            {
+                int currentX = move.get(i).x;
+                int currnetY = move.get(i).y;
+                int changeOnX = move.get(i + 1).x - move.get(i).x != 0 ? (move.get(i + 1).x - move.get(i).x) / Math.abs((move.get(i + 1).x - move.get(i).x)) : 0;
+                int changeOnY = move.get(i + 1).y - move.get(i).y != 0 ? (move.get(i + 1).y - move.get(i).y) / Math.abs((move.get(i + 1).y - move.get(i).y)) : 0;
+                while(true)
+                {
+                    currentX += changeOnX;
+                    currnetY += changeOnY;
+                    if(board.getTiles()[currentX][currnetY].getPiece() != null)
+                    {
+                        board.removePiece(currentX, currnetY);
+                        break;
+                    }
+                }
+            }
+        }
+
+//        if(xDif == 2 || yDif == 2)
+//        {
+//            int currentX = move.get(0).x;
+//            int currnetY = move.get(0).y;
+//            int changeOnX = move.get(1).x - move.get(0).x != 0 ? (move.get(1).x - move.get(0).x) / Math.abs((move.get(1).x - move.get(0).x)) : 0;
+//            int changeOnY = move.get(1).y - move.get(0).y != 0 ? (move.get(1).y - move.get(0).y) / Math.abs((move.get(1).y - move.get(0).y)) : 0;
+//            while(true)
+//            {
+//                currentX += changeOnX;
+//                currnetY += changeOnY;
+//                if(board.getTiles()[currentX][currnetY].getPiece() != null)
+//                {
+//                    board.removePiece(currentX, currnetY);
+//                    break;
+//                }
+//            }
+//        }
     }
 }

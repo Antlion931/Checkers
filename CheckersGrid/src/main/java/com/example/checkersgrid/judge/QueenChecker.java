@@ -16,7 +16,7 @@ public class QueenChecker extends Checker{
     @Override
     public List<List<Cords>> possible_moves(Board board, Cords him) {
         List<List<Cords>> result = new ArrayList<>();
-        Cords[] vectors = new Cords[] {new Cords(1,1), new Cords(-1, 1), new Cords(1, -1), new Cords(-1, -1), new Cords(1, 0), new Cords(-1, 0), new Cords(0, 1), new Cords(0, -1)};
+        Cords[] vectors = new Cords[] {new Cords(1,1), new Cords(-1, 1), new Cords(1, -1), new Cords(-1, -1)};
 
         for(Cords c : vectors) {
             try {
